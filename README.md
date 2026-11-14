@@ -1,19 +1,15 @@
-# SPHEREx Blink — blink the infrared sky
+# InfraBlink — blink the infrared sky
 
 **NASA Space Apps Challenge 2026 · Challenge: _Planet X and SPHEREx_ · Team Sigma Boys (Almaty, Kazakhstan)**
 Akhmet, Ali, Sergazy, Dimash
 
-> **Live site:** https://planetx-spherex.vercel.app · **Demo slides:** [docs/slides.pdf](docs/slides.pdf)
+> **Live site:** https://planetx-spherex.vercel.app
 
 Pluto was found in 1930 by blinking two photographs of the same sky and noticing one dot that moved.
 SPHEREx now photographs the whole sky in 102 infrared colours every six months — more than a billion
-objects, far too many for anyone to check by hand. **SPHEREx Blink** lets anyone type a sky position and
+objects, far too many for anyone to check by hand. **InfraBlink** lets anyone type a sky position and
 watch the real SPHEREx images of that spot change over time, so moving and changing objects give
 themselves away.
-
-## Our idea (in our own words)
-
-_Team: write 2–3 sentences here about what you built and for whom._
 
 ## What it does
 

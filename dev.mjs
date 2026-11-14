@@ -1,4 +1,4 @@
-// Local development server:  node server.mjs   ->  http://localhost:5173
+// Local development server:  node dev.mjs   ->  http://localhost:5173
 // Serves the static site and runs the same /api/* handlers that Vercel runs in production.
 // No dependencies. Code written with AI assistance (Claude), reviewed by team Sigma Boys.
 import http from 'node:http';

@@ -66,7 +66,7 @@ See **[docs/VALIDATION.md](docs/VALIDATION.md)** for numbers, method and limits.
 Requires Node.js 20+, no other dependencies:
 
 ```
-node server.mjs
+node dev.mjs
 # open http://localhost:5173
 ```
 

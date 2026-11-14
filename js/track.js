@@ -21,11 +21,11 @@ const fmtDay = mjd => mjdToDate(mjd).toLocaleDateString('en-GB', { day: 'numeric
 
 const OBJECTS = [
   { label: 'Pluto', naif: 999, note: 'V ≈ 14.5, about 35 AU. The object Clyde Tombaugh found by blinking in 1930.' },
-  { label: 'Makemake', naif: 2136472, note: 'Dwarf planet, V ≈ 17, about 53 AU.' },
-  { label: 'Haumea', naif: 2136108, note: 'Dwarf planet, V ≈ 17.3, about 50 AU.' },
-  { label: 'Eris', naif: 2136199, note: 'Dwarf planet, V ≈ 18.7, about 96 AU: near SPHEREx’s limit.' },
-  { label: 'Sedna', naif: 2090377, note: 'V ≈ 21, about 83 AU: too faint for SPHEREx. A good test of an honest non-detection.' },
-  { label: 'Vesta', naif: 2000004, note: 'Bright main-belt asteroid, V ≈ 6–8: moves fast and saturates.' },
+  { label: 'Makemake', naif: 20136472, note: 'Dwarf planet, V ≈ 17, about 53 AU.' },
+  { label: 'Haumea', naif: 20136108, note: 'Dwarf planet, V ≈ 17.3, about 50 AU.' },
+  { label: 'Eris', naif: 20136199, note: 'Dwarf planet, V ≈ 18.7, about 96 AU: near SPHEREx’s limit.' },
+  { label: 'Sedna', naif: 20090377, note: 'V ≈ 21, about 83 AU: too faint for SPHEREx. A good test of an honest non-detection.' },
+  { label: 'Vesta', naif: 20000004, note: 'Bright main-belt asteroid, V ≈ 6–8: moves fast and saturates.' },
 ];
 
 const T = { obj: OBJECTS[0], band: 0, max: 48, rows: [], frames: [], passes: [], idx: 0, mode: 'follow', timer: null, busy: false, n: 0 };
@@ -36,7 +36,9 @@ function parseMost(text) {
   const hi = lines.findIndex(l => l.startsWith('|') && l.includes('ra_obj'));
   if (hi < 0) {
     const msg = text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-    throw new Error(/Multiple matches/.test(msg) ? 'That name matches several objects. Try its number (e.g. 136199 for Eris).' : msg.slice(0, 300) || 'MOST returned no table.');
+    if (/Multiple matches/.test(msg)) throw new Error('That name matches several objects. Try its number (e.g. 136199 for Eris).');
+    if (/No matching|Name Error/i.test(msg)) throw new Error('The archive could not find that object. Check the name or try its number.');
+    throw new Error(msg.replace(/Workspace URL:.*$/, '').slice(0, 240) || 'MOST returned no table.');
   }
   // fixed-width IPAC table: column boundaries are the '|' positions of the header line
   const H = lines[hi], bars = []; for (let i = 0; i < H.length; i++) if (H[i] === '|') bars.push(i);
@@ -92,6 +94,7 @@ async function run() {
   T.busy = true; stop(); $('tGo').disabled = true;
   T.rows = []; T.frames = []; T.passes = []; T.idx = 0;
   $('tView').hidden = true;
+  { const c = $('tTrack'); c.getContext('2d').clearRect(0, 0, c.width, c.height); $('tTrackLegend').innerHTML = ''; }
   status(`Asking IRSA's Moving Object Search Tool where ${T.obj.label} was during SPHEREx's survey… (this can take up to a minute)`);
   try {
     const qs = T.obj.naif ? `naif=${T.obj.naif}` : `name=${encodeURIComponent(T.obj.label)}`;

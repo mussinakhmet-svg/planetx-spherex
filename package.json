@@ -1,0 +1,9 @@
+{
+  "name": "planetx-spherex",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Blink the infrared sky: a public SPHEREx time-domain viewer (NASA Space Apps 2026, team Sigma Boys)",
+  "scripts": { "dev": "node server.mjs" },
+  "engines": { "node": ">=20" }
+}

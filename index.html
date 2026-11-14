@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blink the infrared sky — a SPHEREx time viewer</title>
+<meta name="description" content="Enter any sky position and watch NASA SPHEREx infrared images of it change over time. Spot what moves, read its spectrum.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23182645'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23FF8A4C' stroke-width='2'/%3E%3Ctext x='16' y='22' font-size='17' font-family='Arial' font-weight='700' text-anchor='middle' fill='%23E6EAF2'%3E?%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<canvas id="planet" aria-hidden="true"></canvas>
+
+<header class="top">
+  <a class="brand" href="./" aria-label="Home">
+    <span class="brand-name" id="brandName">SPHEREx Blink</span>
+    <span class="brand-team">Sigma Boys</span>
+  </a>
+  <nav class="lang" aria-label="Language">
+    <button data-lang="en" aria-pressed="true">EN</button>
+    <button data-lang="kk" aria-pressed="false">ҚАЗ</button>
+    <button data-lang="ru" aria-pressed="false">РУС</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1 data-i18n="heroTitle">Pluto was found by blinking two photographs. Now you can blink the whole infrared sky.</h1>
+  <p class="lede" data-i18n="heroLede">Type any sky position. We pull the real SPHEREx exposures of that spot straight from NASA's archive, line them up, and play them in time order, so anything that moves or changes gives itself away.</p>
+</section>
+
+<main class="bench" id="bench">
+  <aside class="panel controls" aria-label="Target">
+    <h2 data-i18n="pickTarget">Pick a target</h2>
+    <div class="targets" id="targets"></div>
+
+    <form id="searchForm" class="search" autocomplete="off">
+      <label for="q" data-i18n="orEnter">or enter coordinates or a name</label>
+      <input id="q" name="q" type="text" placeholder="269.452 +4.693  or  Vega" spellcheck="false">
+      <p class="hint" data-i18n="coordHint">Degrees, or 17h57m48s +04°41′36″, or an object name.</p>
+      <div class="row split">
+        <label class="field"><span data-i18n="fieldSize">Field of view</span>
+          <select id="fov">
+            <option value="4">4′</option><option value="6" selected>6′</option><option value="9">9′</option><option value="12">12′</option>
+          </select>
+        </label>
+        <label class="field"><span data-i18n="maxFrames">Exposures</span>
+          <select id="maxFrames">
+            <option value="24">24</option><option value="48" selected>48</option><option value="96">96</option><option value="0" data-i18n="allOpt">all</option>
+          </select>
+        </label>
+      </div>
+      <fieldset class="bands">
+        <legend data-i18n="wavelength">Wavelength band</legend>
+        <div id="bands" class="chips"></div>
+      </fieldset>
+      <button class="go" type="submit" id="go" data-i18n="load">Show this sky</button>
+    </form>
+
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+    <div class="progress" id="progress" hidden><i></i></div>
+    <button class="linkbtn" id="share" type="button" hidden data-i18n="share">Copy a link to this view</button>
+  </aside>
+
+  <section class="viewer" aria-label="Sky viewer">
+    <div class="tabs" role="tablist">
+      <button role="tab" data-mode="frames" aria-selected="true" data-i18n="tabFrames">Every exposure</button>
+      <button role="tab" data-mode="epochs" aria-selected="false" data-i18n="tabEpochs">Survey passes, stacked</button>
+      <button role="tab" data-mode="diff" aria-selected="false" data-i18n="tabDiff">Difference</button>
+    </div>
+    <div class="plate" id="plate">
+      <canvas id="sky" width="117" height="117"></canvas>
+      <canvas id="overlay"></canvas>
+      <div class="plate-empty" id="empty">
+        <p data-i18n="emptyHint">Pick a target on the left to load real SPHEREx images.</p>
+      </div>
+      <div class="caption" id="caption"></div>
+      <div class="hover" id="hover" hidden></div>
+    </div>
+    <div class="transport">
+      <button id="prev" class="tbtn" type="button" aria-label="Previous image">‹</button>
+      <button id="play" class="tbtn play" type="button" aria-label="Play or pause"><span id="playIcon">▶</span></button>
+      <button id="next" class="tbtn" type="button" aria-label="Next image">›</button>
+      <input id="scrub" type="range" min="0" max="0" value="0" step="1" aria-label="Image number">
+      <span class="count" id="count">0 / 0</span>
+    </div>
+    <canvas id="timeline" class="timeline" height="58" aria-label="Timeline of exposures"></canvas>
+    <div class="tools">
+      <label class="field inline"><span data-i18n="speed">Speed</span>
+        <input id="fps" type="range" min="1" max="12" value="4" step="1"></label>
+      <label class="field inline"><span data-i18n="brightness">Brightness</span>
+        <input id="gain" type="range" min="-20" max="20" value="0" step="1"></label>
+      <label class="field inline"><span data-i18n="order">Order</span>
+        <select id="order"><option value="time" data-i18n="byTime">by date</option><option value="wave" data-i18n="byWave">by wavelength</option></select></label>
+      <label class="field inline"><span data-i18n="colours">Colours</span>
+        <select id="cmap"><option value="heat" data-i18n="cmHeat">infrared</option><option value="gray" data-i18n="cmGray">grey</option><option value="invert" data-i18n="cmInvert">negative</option></select></label>
+      <label class="check"><input id="showGaia" type="checkbox"> <span data-i18n="gaiaStars">Gaia stars</span></label>
+      <label class="check"><input id="smooth" type="checkbox"> <span data-i18n="smooth">Smooth</span></label>
+      <button class="linkbtn" id="savePng" type="button" data-i18n="savePng">Save image</button>
+      <button class="linkbtn" id="saveGif" type="button" data-i18n="saveGif">Save GIF</button>
+    </div>
+  </section>
+
+  <aside class="panel readouts" aria-label="Details">
+    <section class="card">
+      <h2 data-i18n="thisFrame">This image</h2>
+      <dl id="meta" class="meta"><dt class="muted" data-i18n="nothingYet">Nothing loaded yet.</dt></dl>
+    </section>
+    <section class="card">
+      <h2 data-i18n="motionTitle">Did it move?</h2>
+      <div id="motion" class="motion"><p class="muted" data-i18n="motionHint">Click any source in the image to measure how far it moved between survey passes.</p></div>
+    </section>
+    <section class="card">
+      <h2 data-i18n="spectrumTitle">Its spectrum</h2>
+      <div id="specWrap" class="spec">
+        <canvas id="spec" height="230"></canvas>
+        <div id="specTip" class="tip" hidden></div>
+        <div id="specLegend" class="legend"></div>
+        <div id="vari" class="motion" hidden></div>
+        <p class="muted" id="specHint" data-i18n="specHint">Every exposure sees a source at a different wavelength. Click a source and its exposures line up into a spectrum.</p>
+      </div>
+    </section>
+  </aside>
+</main>
+
+<section class="notes">
+  <article>
+    <h2 data-i18n="howTitle">How it works</h2>
+    <ol>
+      <li data-i18n="how1">We ask NASA's IRSA archive which SPHEREx exposures cover your position.</li>
+      <li data-i18n="how2">Your browser reads only the few hundred pixels it needs from each 62 MB file in NASA's public cloud copy, instead of downloading it.</li>
+      <li data-i18n="how3">Each exposure is turned north-up and lined up to a fraction of a pixel using its own sky calibration.</li>
+      <li data-i18n="how4">Exposures from one survey pass are averaged, so faint things rise out of the noise. Subtract two passes and everything that stayed put disappears.</li>
+    </ol>
+  </article>
+  <article>
+    <h2 data-i18n="limitsTitle">What it cannot do</h2>
+    <ul>
+      <li data-i18n="limit1">One SPHEREx pixel is 6.15″ wide. A shift smaller than about a third of a pixel is hard to see by eye, so we measure it instead.</li>
+      <li data-i18n="limit2">Each exposure sees a given spot at a single wavelength, so brightness changes from image to image even for a steady star. Compare stacked passes to judge real change.</li>
+      <li data-i18n="limit3">A planet as faint as the proposed Planet Nine is far below what one exposure reaches. This tool shows the method working on known movers. It does not claim a discovery.</li>
+    </ul>
+  </article>
+  <article>
+    <h2 data-i18n="creditTitle">Data and credits</h2>
+    <p data-i18n-html="credit1">Images: SPHEREx Level-2 spectral images, NASA/JPL-Caltech/IPAC, from the <a href="https://irsa.ipac.caltech.edu/Missions/spherex.html" target="_blank" rel="noopener">NASA/IPAC Infrared Science Archive</a> and its public cloud copy. Star positions: ESA Gaia DR3. Names: SIMBAD, CDS Strasbourg.</p>
+    <p data-i18n-html="credit2">Built by team Sigma Boys for the 2026 NASA Space Apps Challenge, “Planet X and SPHEREx”. The code was written with the help of an AI assistant and is <a id="repoLink" href="https://github.com/" target="_blank" rel="noopener">open source</a>. This site is not affiliated with or endorsed by NASA.</p>
+  </article>
+</section>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

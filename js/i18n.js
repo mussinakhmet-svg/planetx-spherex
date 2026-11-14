@@ -1,0 +1,221 @@
+// i18n.js — English (default), Kazakh and Russian interface text.
+// English strings for static text live in index.html; this file holds translations and
+// the strings the app builds at run time.
+// Text written with AI assistance (Claude), reviewed by team Sigma Boys.
+
+const EN = {
+  nothingYet: 'Nothing loaded yet.',
+  motionHint: 'Click any source in the image to measure how far it moved between survey passes.',
+  specHint: 'Every exposure sees a source at a different wavelength. Click a source and its exposures line up into a spectrum.',
+  kindMover: 'moves', kindVariable: 'varies',
+  bandAll: 'all',
+  searching: 'Asking NASA/IPAC IRSA which exposures cover this spot…',
+  resolving: 'Looking up “{name}”…',
+  notFound: 'We could not find “{name}”. Check the spelling, or enter coordinates in degrees.',
+  badCoords: 'We could not read that. Try “269.452 4.693”, “17h57m48s +04°41′36″” or an object name.',
+  noFrames: 'SPHEREx has no public exposures of this position yet. New data arrive every week; try another band or come back later.',
+  searchFailed: 'The archive did not answer. Check your connection and try again.',
+  found: 'Found {n} exposures in {p} survey passes. Reading {m} of them…',
+  loading: 'Reading exposure {i} of {m}…',
+  done: 'Loaded {m} exposures ({mb} MB, {s} s).',
+  doneSome: 'Loaded {ok} of {m} exposures ({mb} MB, {s} s). {bad} could not be read.',
+  movedNote: 'This catalogue position is for the year {epoch}. The object has moved {d}″ since then, so the view is centred where it is now.',
+  copied: 'Link copied.',
+  date: 'Date (UTC)', wavelength2: 'Wavelength', detector: 'Detector band', exposure: 'Exposure', psf: 'Sharpness (PSF)',
+  quality: 'Quality checks', release: 'Data release', file: 'Source file', open: 'open at IRSA',
+  onDetector: 'Detector pixel', passed: 'passed', failed: 'failed', astromOk: 'astrometry ok', astromPoor: 'coarse astrometry',
+  aurora: 'aurora', airglow: 'airglow', glow: 'shuttle glow', streaks: 'satellite streak',
+  nAveraged: 'Exposures averaged', stackOf: '{n} exposures averaged', dates: 'Dates', waveRange: 'Wavelengths', noise: 'Noise vs one exposure', times: '{x}× lower',
+  minus: '{b} minus {a}', diffHelp: 'Orange: brighter in the later pass. Blue: brighter in the earlier pass. A mover shows as a blue-orange pair.',
+  pass: 'Pass {k}', passDates: '{a} – {b}',
+  frameCap: '{date}', frameSub: '{lam} µm · band {det}',
+  motionTarget: 'Position of {name} in each pass, measured on the images:',
+  motionPick: 'Position of the source you clicked, in each pass:',
+  colPass: 'Pass', colN: 'n', colEast: 'East', colNorth: 'North', colPred: 'Catalogue',
+  verdictMoved: 'It moved <b>{d}″</b> ({px} pixels) in {yr} years: about <b>{rate}″ per year</b> toward {dir}.',
+  verdictStill: 'No motion detected: shift {d} ± {e}″, less than this method can resolve.',
+  verdictPred: 'The catalogue predicts {d}″. Difference: {diff}″.',
+  noCentroid: 'There is no clear source here to measure. Click a brighter one.',
+  needTwo: 'Only one survey pass covers this spot in the loaded exposures, so motion cannot be measured yet.',
+  refsUsed: 'Each exposure was re-aligned on {n} ordinary stars in the field.',
+  saturated: 'The core of this star is saturated; its position comes from the unsaturated wings.',
+  specAxisX: 'wavelength, µm', specAxisY: 'brightness, mJy',
+  specTip: '{lam} µm · {f} mJy · {date}', specSat: 'saturated (lower limit)',
+  variIntro: 'Brightness change from {a} to {b}, compared at matching wavelengths:', colBand: 'Wavelengths', colChange: 'Change',
+  variYes: 'Its brightness <b>really changed</b> between survey passes: more than the measurement scatter.', variNo: 'No change larger than the measurement scatter.', variOne: 'A change shows up in one wavelength range only. That is not enough to call it real: check the image for a neighbour or an artefact.',
+  variWing: 'The star is so bright that its centre is saturated, so we compare its halo, which is a fixed share of its light at a given wavelength.',
+  specNone: 'No measurable signal here.', specBad: 'cosmic-ray hit, left out',
+  dirs: ['north', 'north-east', 'east', 'south-east', 'south', 'south-west', 'west', 'north-west'],
+  predictedHere: 'catalogue',
+  gaiaFailed: 'Gaia stars could not be loaded.',
+  hoverVal: '{v} MJy/sr above sky',
+};
+
+const RU = {
+  heroTitle: 'Плутон нашли, сравнив две фотографии. Теперь так можно сравнивать всё инфракрасное небо.',
+  heroLede: 'Введите любую точку неба. Мы берём настоящие снимки SPHEREx этого места прямо из архива NASA, совмещаем их и показываем по порядку. Всё, что движется или меняется, сразу выдаёт себя.',
+  pickTarget: 'Выберите цель', orEnter: 'или введите координаты или название', coordHint: 'Градусы, или 17h57m48s +04°41′36″, или название объекта.',
+  fieldSize: 'Поле зрения', maxFrames: 'Снимков', allOpt: 'все', wavelength: 'Диапазон длин волн', load: 'Показать это небо',
+  share: 'Скопировать ссылку на этот вид',
+  tabFrames: 'Каждый снимок', tabEpochs: 'Проходы обзора, сложенные', tabDiff: 'Разность',
+  emptyHint: 'Выберите цель слева, чтобы загрузить настоящие снимки SPHEREx.',
+  speed: 'Скорость', brightness: 'Яркость', order: 'Порядок', byTime: 'по дате', byWave: 'по длине волны',
+  colours: 'Цвета', cmHeat: 'инфракрасные', cmGray: 'серые', cmInvert: 'негатив', gaiaStars: 'Звёзды Gaia', smooth: 'Сгладить',
+  savePng: 'Сохранить картинку', saveGif: 'Сохранить GIF',
+  thisFrame: 'Этот снимок', nothingYet: 'Пока ничего не загружено.',
+  motionTitle: 'Оно сдвинулось?', motionHint: 'Нажмите на любой источник на снимке, чтобы измерить, насколько он сместился между проходами обзора.',
+  spectrumTitle: 'Его спектр', specHint: 'Каждый снимок видит источник на своей длине волны. Нажмите на источник, и снимки выстроятся в спектр.',
+  howTitle: 'Как это работает',
+  how1: 'Мы спрашиваем архив NASA IRSA, какие снимки SPHEREx покрывают вашу точку.',
+  how2: 'Браузер читает из каждого файла по 62 МБ в открытом облаке NASA только несколько сотен нужных пикселей, а не скачивает его целиком.',
+  how3: 'Каждый снимок поворачивается севером вверх и совмещается с точностью до доли пикселя по собственной калибровке.',
+  how4: 'Снимки одного прохода обзора усредняются, и слабые объекты выступают из шума. Вычтите один проход из другого, и всё неподвижное исчезнет.',
+  limitsTitle: 'Чего он не умеет',
+  limit1: 'Один пиксель SPHEREx равен 6,15″. Сдвиг меньше трети пикселя трудно увидеть глазом, поэтому мы его измеряем.',
+  limit2: 'Каждый снимок видит точку неба на одной длине волны, поэтому яркость меняется от кадра к кадру даже у спокойной звезды. О настоящих изменениях судите по сложенным проходам.',
+  limit3: 'Планета такой слабой яркости, как предполагаемая Девятая планета, гораздо слабее предела одного снимка. Этот инструмент показывает, что метод работает на известных движущихся объектах. Об открытии он не заявляет.',
+  creditTitle: 'Данные и благодарности',
+  credit1: 'Снимки: спектральные изображения SPHEREx уровня 2, NASA/JPL-Caltech/IPAC, из <a href="https://irsa.ipac.caltech.edu/Missions/spherex.html" target="_blank" rel="noopener">архива NASA/IPAC IRSA</a> и его открытой облачной копии. Положения звёзд: ESA Gaia DR3. Названия: SIMBAD, CDS, Страсбург.',
+  credit2: 'Сделано командой Sigma Boys для NASA Space Apps Challenge 2026, челлендж «Planet X and SPHEREx». Код написан с помощью ИИ-ассистента и <a id="repoLink" href="https://github.com/" target="_blank" rel="noopener">открыт</a>. Сайт не связан с NASA и не одобрен им.',
+  kindMover: 'движется', kindVariable: 'меняет яркость', bandAll: 'все',
+  searching: 'Спрашиваем архив NASA/IPAC IRSA, какие снимки покрывают эту точку…',
+  resolving: 'Ищем «{name}»…',
+  notFound: 'Не нашли «{name}». Проверьте написание или введите координаты в градусах.',
+  badCoords: 'Не получилось прочитать. Попробуйте «269.452 4.693», «17h57m48s +04°41′36″» или название объекта.',
+  noFrames: 'У SPHEREx пока нет открытых снимков этой точки. Новые данные приходят каждую неделю: попробуйте другой диапазон или зайдите позже.',
+  searchFailed: 'Архив не ответил. Проверьте соединение и попробуйте ещё раз.',
+  found: 'Найдено снимков: {n}, проходов обзора: {p}. Читаем {m} из них…',
+  loading: 'Читаем снимок {i} из {m}…',
+  done: 'Загружено снимков: {m} ({mb} МБ, {s} с).',
+  doneSome: 'Загружено {ok} из {m} снимков ({mb} МБ, {s} с). Не прочитано: {bad}.',
+  movedNote: 'Это положение из каталога на {epoch} год. С тех пор объект сместился на {d}″, поэтому вид центрирован там, где он сейчас.',
+  copied: 'Ссылка скопирована.',
+  date: 'Дата (UTC)', wavelength2: 'Длина волны', detector: 'Диапазон детектора', exposure: 'Выдержка', psf: 'Резкость (PSF)',
+  quality: 'Проверки качества', release: 'Выпуск данных', file: 'Исходный файл', open: 'открыть в IRSA',
+  onDetector: 'Пиксель детектора', passed: 'пройдена', failed: 'не пройдена', astromOk: 'астрометрия в норме', astromPoor: 'грубая астрометрия',
+  aurora: 'полярное сияние', airglow: 'свечение атмосферы', glow: 'свечение корпуса', streaks: 'след спутника',
+  nAveraged: 'Усреднено снимков', stackOf: 'усреднено снимков: {n}', dates: 'Даты', waveRange: 'Длины волн', noise: 'Шум по сравнению с одним снимком', times: 'в {x} раза ниже',
+  minus: '{b} минус {a}', diffHelp: 'Оранжевое: ярче в позднем проходе. Синее: ярче в раннем. Движущийся объект выглядит как сине-оранжевая пара.',
+  pass: 'Проход {k}', passDates: '{a} – {b}',
+  frameCap: '{date}', frameSub: '{lam} мкм · диапазон {det}',
+  motionTarget: 'Положение объекта {name} в каждом проходе, измеренное по снимкам:',
+  motionPick: 'Положение выбранного источника в каждом проходе:',
+  colPass: 'Проход', colN: 'n', colEast: 'Восток', colNorth: 'Север', colPred: 'Каталог',
+  verdictMoved: 'Сдвиг <b>{d}″</b> ({px} пикселя) за {yr} года: около <b>{rate}″ в год</b> на {dir}.',
+  verdictStill: 'Движения не видно: сдвиг {d} ± {e}″, это меньше, чем различает метод.',
+  verdictPred: 'Каталог предсказывает {d}″. Разница: {diff}″.',
+  noCentroid: 'Здесь нет чёткого источника для измерения. Нажмите на более яркий.',
+  needTwo: 'В загруженных снимках эту точку покрывает только один проход обзора, поэтому движение пока измерить нельзя.',
+  refsUsed: 'Каждый снимок дополнительно совмещён по {n} обычным звёздам поля.',
+  saturated: 'Центр этой звезды пересвечен; положение измерено по непересвеченным краям.',
+  specAxisX: 'длина волны, мкм', specAxisY: 'яркость, мЯн',
+  specTip: '{lam} мкм · {f} мЯн · {date}', specSat: 'пересвет (нижний предел)',
+  variIntro: 'Изменение яркости с {a} по {b}, сравнение на одинаковых длинах волн:', colBand: 'Длины волн', colChange: 'Изменение',
+  variYes: 'Яркость <b>действительно изменилась</b> между проходами обзора: больше разброса измерений.', variNo: 'Изменений больше разброса измерений нет.', variOne: 'Изменение видно только в одном диапазоне длин волн. Этого мало, чтобы считать его настоящим: проверьте снимок на соседнюю звезду или артефакт.',
+  variWing: 'Звезда так ярка, что её центр пересвечен, поэтому сравниваем ореол: на данной длине волны это постоянная доля её света.',
+  specNone: 'Здесь нет измеримого сигнала.', specBad: 'след космической частицы, не учтён',
+  dirs: ['север', 'северо-восток', 'восток', 'юго-восток', 'юг', 'юго-запад', 'запад', 'северо-запад'],
+  predictedHere: 'каталог',
+  gaiaFailed: 'Не удалось загрузить звёзды Gaia.',
+  hoverVal: '{v} МЯн/ср над фоном',
+};
+
+const KK = {
+  heroTitle: 'Плутон екі фотосуретті салыстыру арқылы табылған. Енді бүкіл инфрақызыл аспанды осылай салыстыруға болады.',
+  heroLede: 'Аспанның кез келген нүктесін енгізіңіз. Біз сол жердің нақты SPHEREx суреттерін NASA мұрағатынан тікелей алып, оларды дәл беттестіріп, уақыт ретімен көрсетеміз. Қозғалатын немесе өзгеретін нәрсенің бәрі бірден байқалады.',
+  pickTarget: 'Нысананы таңдаңыз', orEnter: 'немесе координаттарды не атауын енгізіңіз', coordHint: 'Градуспен, немесе 17h57m48s +04°41′36″, немесе нысан атауы.',
+  fieldSize: 'Көру алаңы', maxFrames: 'Суреттер саны', allOpt: 'барлығы', wavelength: 'Толқын ұзындығы диапазоны', load: 'Осы аспанды көрсету',
+  share: 'Осы көріністің сілтемесін көшіру',
+  tabFrames: 'Әр сурет', tabEpochs: 'Шолу өтулері, біріктірілген', tabDiff: 'Айырма',
+  emptyHint: 'Нақты SPHEREx суреттерін жүктеу үшін сол жақтан нысананы таңдаңыз.',
+  speed: 'Жылдамдық', brightness: 'Жарықтық', order: 'Реті', byTime: 'күні бойынша', byWave: 'толқын ұзындығы бойынша',
+  colours: 'Түстер', cmHeat: 'инфрақызыл', cmGray: 'сұр', cmInvert: 'негатив', gaiaStars: 'Gaia жұлдыздары', smooth: 'Тегістеу',
+  savePng: 'Суретті сақтау', saveGif: 'GIF сақтау',
+  thisFrame: 'Осы сурет', nothingYet: 'Әзірге ештеңе жүктелмеген.',
+  motionTitle: 'Ол жылжыды ма?', motionHint: 'Шолу өтулері арасында қаншалықты жылжығанын өлшеу үшін суреттегі кез келген көзді басыңыз.',
+  spectrumTitle: 'Оның спектрі', specHint: 'Әр сурет көзді өз толқын ұзындығында көреді. Көзді бассаңыз, суреттер спектрге тізіледі.',
+  howTitle: 'Бұл қалай жұмыс істейді',
+  how1: 'Біз NASA IRSA мұрағатынан сіздің нүктеңізді қай SPHEREx суреттері қамтитынын сұраймыз.',
+  how2: 'Браузер NASA-ның ашық бұлтындағы әр 62 МБ файлдан тек қажетті бірнеше жүз пиксельді оқиды, файлды толық жүктемейді.',
+  how3: 'Әр сурет солтүстігі жоғары қаратылып, өз калибрлеуі бойынша пиксельдің үлесіне дейінгі дәлдікпен беттестіріледі.',
+  how4: 'Бір шолу өтуінің суреттері орташаланады да, әлсіз нысандар шудан көрініп шығады. Бір өтуді екіншісінен азайтсаңыз, қозғалмайтынның бәрі жоғалады.',
+  limitsTitle: 'Ол не істей алмайды',
+  limit1: 'SPHEREx-тің бір пикселі 6,15″. Пиксельдің үштен бірінен кіші ығысуды көзбен көру қиын, сондықтан біз оны өлшейміз.',
+  limit2: 'Әр сурет аспан нүктесін бір ғана толқын ұзындығында көреді, сондықтан тұрақты жұлдыздың өзінде жарықтық кадрдан кадрға өзгереді. Нақты өзгерісті біріктірілген өтулер бойынша бағалаңыз.',
+  limit3: 'Болжамды Тоғызыншы ғаламшар сияқты әлсіз ғаламшар бір суреттің шегінен әлдеқайда әлсіз. Бұл құрал әдістің белгілі қозғалатын нысандарда жұмыс істейтінін көрсетеді. Ашылым туралы мәлімдемейді.',
+  creditTitle: 'Деректер мен алғыс',
+  credit1: 'Суреттер: SPHEREx 2-деңгейлі спектрлік кескіндері, NASA/JPL-Caltech/IPAC, <a href="https://irsa.ipac.caltech.edu/Missions/spherex.html" target="_blank" rel="noopener">NASA/IPAC IRSA мұрағатынан</a> және оның ашық бұлттағы көшірмесінен. Жұлдыздардың орны: ESA Gaia DR3. Атаулар: SIMBAD, CDS, Страсбург.',
+  credit2: 'Sigma Boys командасы NASA Space Apps Challenge 2026, «Planet X and SPHEREx» челленджі үшін жасаған. Код ЖИ көмекшісінің көмегімен жазылған және <a id="repoLink" href="https://github.com/" target="_blank" rel="noopener">ашық</a>. Сайт NASA-мен байланысты емес және оның мақұлдауын алмаған.',
+  kindMover: 'қозғалады', kindVariable: 'жарықтығы өзгереді', bandAll: 'барлығы',
+  searching: 'NASA/IPAC IRSA мұрағатынан осы нүктені қай суреттер қамтитынын сұрап жатырмыз…',
+  resolving: '«{name}» ізделуде…',
+  notFound: '«{name}» табылмады. Жазылуын тексеріңіз немесе координаттарды градуспен енгізіңіз.',
+  badCoords: 'Оқи алмадық. «269.452 4.693», «17h57m48s +04°41′36″» немесе нысан атауын жазып көріңіз.',
+  noFrames: 'SPHEREx-те бұл нүктенің ашық суреттері әзірге жоқ. Жаңа деректер апта сайын келеді: басқа диапазонды байқап көріңіз немесе кейінірек келіңіз.',
+  searchFailed: 'Мұрағат жауап бермеді. Байланысты тексеріп, қайталап көріңіз.',
+  found: 'Табылған суреттер: {n}, шолу өтулері: {p}. Оның {m} оқылып жатыр…',
+  loading: '{m} суреттің {i}-шісі оқылуда…',
+  done: 'Жүктелген суреттер: {m} ({mb} МБ, {s} с).',
+  doneSome: '{m} суреттің {ok} жүктелді ({mb} МБ, {s} с). Оқылмағаны: {bad}.',
+  movedNote: 'Бұл каталогтағы {epoch} жылғы орны. Содан бері нысан {d}″ жылжыды, сондықтан көрініс оның қазіргі орнына центрленген.',
+  copied: 'Сілтеме көшірілді.',
+  date: 'Күні (UTC)', wavelength2: 'Толқын ұзындығы', detector: 'Детектор диапазоны', exposure: 'Экспозиция', psf: 'Айқындық (PSF)',
+  quality: 'Сапа тексерулері', release: 'Деректер шығарылымы', file: 'Бастапқы файл', open: 'IRSA-да ашу',
+  onDetector: 'Детектор пикселі', passed: 'өтті', failed: 'өтпеді', astromOk: 'астрометрия қалыпты', astromPoor: 'дөрекі астрометрия',
+  aurora: 'поляр шұғыласы', airglow: 'атмосфера жарқылы', glow: 'корпус жарқылы', streaks: 'жерсерік ізі',
+  nAveraged: 'Орташаланған суреттер', stackOf: 'орташаланған суреттер: {n}', dates: 'Күндері', waveRange: 'Толқын ұзындықтары', noise: 'Бір суретпен салыстырғандағы шу', times: '{x} есе төмен',
+  minus: '{b} минус {a}', diffHelp: 'Қызғылт сары: кейінгі өтуде жарығырақ. Көк: ертерек өтуде жарығырақ. Қозғалатын нысан көк-қызғылт сары жұп болып көрінеді.',
+  pass: '{k}-өту', passDates: '{a} – {b}',
+  frameCap: '{date}', frameSub: '{lam} мкм · диапазон {det}',
+  motionTarget: '{name} нысанының әр өтудегі суреттер бойынша өлшенген орны:',
+  motionPick: 'Таңдалған көздің әр өтудегі орны:',
+  colPass: 'Өту', colN: 'n', colEast: 'Шығыс', colNorth: 'Солтүстік', colPred: 'Каталог',
+  verdictMoved: '{yr} жылда <b>{d}″</b> ({px} пиксель) жылжыды: жылына шамамен <b>{rate}″</b>, бағыты: {dir}.',
+  verdictStill: 'Қозғалыс байқалмады: ығысу {d} ± {e}″, бұл әдіс ажырата алатын шамадан аз.',
+  verdictPred: 'Каталог {d}″ болжайды. Айырмашылық: {diff}″.',
+  noCentroid: 'Мұнда өлшеуге болатын анық көз жоқ. Жарығырағын басыңыз.',
+  needTwo: 'Жүктелген суреттерде бұл нүктені тек бір шолу өтуі қамтиды, сондықтан қозғалысты әзірге өлшеу мүмкін емес.',
+  refsUsed: 'Әр сурет алаңдағы {n} қарапайым жұлдыз бойынша қосымша беттестірілді.',
+  saturated: 'Бұл жұлдыздың ортасы қанығып кеткен; орны қанықпаған шеттері бойынша өлшенді.',
+  specAxisX: 'толқын ұзындығы, мкм', specAxisY: 'жарықтық, мЯн',
+  specTip: '{lam} мкм · {f} мЯн · {date}', specSat: 'қаныққан (төменгі шек)',
+  variIntro: '{a} мен {b} аралығындағы жарықтық өзгерісі, бірдей толқын ұзындықтарында салыстырылды:', colBand: 'Толқын ұзындығы', colChange: 'Өзгеріс',
+  variYes: 'Жарықтық шолу өтулері арасында <b>шынымен өзгерді</b>: өлшеу шашырауынан көп.', variNo: 'Өлшеу шашырауынан асатын өзгеріс жоқ.', variOne: 'Өзгеріс тек бір толқын ұзындығы диапазонында көрінеді. Оны нақты деуге бұл аз: суретте көрші жұлдыз не артефакт жоқ па, тексеріңіз.',
+  variWing: 'Жұлдыз соншалық жарық, ортасы қанығып кеткен, сондықтан оның гало бөлігін салыстырамыз: берілген толқын ұзындығында ол жарығының тұрақты үлесі.',
+  specNone: 'Мұнда өлшенетін сигнал жоқ.', specBad: 'ғарыштық бөлшек ізі, есепке алынбады',
+  dirs: ['солтүстік', 'солтүстік-шығыс', 'шығыс', 'оңтүстік-шығыс', 'оңтүстік', 'оңтүстік-батыс', 'батыс', 'солтүстік-батыс'],
+  predictedHere: 'каталог',
+  gaiaFailed: 'Gaia жұлдыздарын жүктеу мүмкін болмады.',
+  hoverVal: 'фоннан {v} МЯн/ср жоғары',
+};
+
+const DICT = { en: EN, ru: RU, kk: KK };
+export let lang = 'en';
+const originals = new Map();
+
+export function t(key, vars) {
+  let s = (DICT[lang] && DICT[lang][key]) ?? EN[key] ?? key;
+  if (vars && typeof s === 'string') s = s.replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? ''));
+  return s;
+}
+
+export function setLang(l) {
+  lang = DICT[l] ? l : 'en';
+  document.documentElement.lang = lang;
+  try { localStorage.setItem('lang', lang); } catch { /* private mode */ }
+  for (const el of document.querySelectorAll('[data-i18n], [data-i18n-html]')) {
+    const html = el.hasAttribute('data-i18n-html');
+    const key = el.getAttribute(html ? 'data-i18n-html' : 'data-i18n');
+    if (!originals.has(el)) originals.set(el, html ? el.innerHTML : el.textContent);
+    const tr = lang === 'en' ? null : DICT[lang][key];
+    if (html) el.innerHTML = tr ?? originals.get(el); else el.textContent = tr ?? originals.get(el);
+  }
+  for (const b of document.querySelectorAll('.lang button')) b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+}
+
+export function initialLang() {
+  const q = new URLSearchParams(location.search).get('lang');
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch { /* ignore */ }
+  return q || saved || 'en';      // English by default (submission rule); the visitor's choice is remembered
+}

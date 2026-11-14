@@ -1,4 +1,8 @@
 {
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "",
+  "outputDirectory": ".",
   "functions": { "api/*.js": { "maxDuration": 60 } },
   "headers": [
     { "source": "/js/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=300" }] }

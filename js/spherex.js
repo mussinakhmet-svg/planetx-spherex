@@ -63,6 +63,7 @@ function parseSiaCsv(text, collection) {
 
 /** Find all exposures covering (ra, dec). Returns frames sorted by time, de-duplicated. */
 export async function searchFrames(ra, dec, { signal, radius = 0.002, onCollection } = {}) {
+  let failed = 0, lastErr = null;
   const results = await Promise.all(COLLECTIONS.map(async c => {
     const q = API.sia(c, ra, dec, radius);
     try {
@@ -74,9 +75,15 @@ export async function searchFrames(ra, dec, { signal, radius = 0.002, onCollecti
     } catch (e) {
       if (signal && signal.aborted) throw e;
       if (onCollection) onCollection(c, -1, e);
+      failed++; lastErr = e;
       return [];
     }
   }));
+  // Every search failed: this is a server problem, not an empty sky. Say so instead of "no exposures".
+  if (failed === COLLECTIONS.length) {
+    throw new Error('Could not reach the archive search (' + (lastErr && lastErr.message) + '). ' +
+      'This site needs its small server part in /api, so it runs on Vercel or with "node dev.mjs", not on GitHub Pages.');
+  }
   const seen = new Map();
   for (const list of results) for (const f of list) if (!seen.has(f.id)) seen.set(f.id, f);
   const frames = [...seen.values()].sort((a, b) => a.mjd - b.mjd);

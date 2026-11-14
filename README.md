@@ -3,7 +3,7 @@
 **NASA Space Apps Challenge 2026 · Challenge: _Planet X and SPHEREx_ · Team Sigma Boys (Almaty, Kazakhstan)**
 Akhmet, Ali, Sergazy, Dimash
 
-> **Live site:** _add the Vercel link here_ · **Demo slides:** _add the link here_
+> **Live site:** https://planetx-spherex.vercel.app · **Demo slides:** [docs/slides.pdf](docs/slides.pdf)
 
 Pluto was found in 1930 by blinking two photographs of the same sky and noticing one dot that moved.
 SPHEREx now photographs the whole sky in 102 infrared colours every six months — more than a billion

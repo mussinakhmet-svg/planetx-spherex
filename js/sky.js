@@ -11,6 +11,7 @@ import { searchFrames, BANDS } from './spherex.js';
 import { parseCoords, fmtRa, fmtDec, mjdToDate, sunVector } from './wcs.js';
 import { TARGETS } from './targets.js';
 import { t, lang } from './i18n.js';
+import { tx } from './i18n-ui.js';
 
 const D2R = Math.PI / 180, R2D = 180 / Math.PI;
 const $ = id => document.getElementById(id);
@@ -322,7 +323,7 @@ function draw() {
     if (!p9Orbit) buildP9();
     ctx.setLineDash([8, 6]); ctx.strokeStyle = 'rgba(255,138,76,0.8)'; ctx.lineWidth = 1.5; ctx.beginPath(); polyline(p9Orbit); ctx.stroke(); ctx.setLineDash([]);
     const ap = proj(...p9Orbit[90]);
-    if (ap) { ctx.fillStyle = '#ff8a4c'; ctx.beginPath(); ctx.arc(ap[0], ap[1], 4, 0, Math.PI * 2); ctx.fill(); label('Planet Nine aphelion (nominal orbit)', ap[0], ap[1], { color: '#ffb48a', size: 11, weight: 600 }); }
+    if (ap) { ctx.fillStyle = '#ff8a4c'; ctx.beginPath(); ctx.arc(ap[0], ap[1], 4, 0, Math.PI * 2); ctx.fill(); label(tx('Planet Nine aphelion (nominal orbit)'), ap[0], ap[1], { color: '#ffb48a', size: 11, weight: 600 }); }
   }
   if (L.tno) {
     if (!tnos) loadTnos();

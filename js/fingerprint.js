@@ -13,6 +13,7 @@
 
 import { propagate } from './wcs.js';
 import { TARGETS } from './targets.js';
+import { tx } from './i18n-ui.js';
 
 const $ = id => document.getElementById(id);
 const ST = () => window.__st;
@@ -240,8 +241,8 @@ function draw() {
   const step = niceStep((hi - lo) / 5);
   for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) { gx.beginPath(); gx.moveTo(pad.l, y(v)); gx.lineTo(W - pad.r, y(v)); gx.stroke(); gx.textAlign = 'right'; gx.fillText(fmtFlux(v), pad.l - 6, y(v) + 4); }
   for (let l = 1; l <= 5; l++) { gx.textAlign = 'center'; gx.fillText(String(l), x(l), Hh - pad.b + 16); }
-  gx.fillText('Wavelength (µm)', (pad.l + W - pad.r) / 2, Hh - 4);
-  gx.save(); gx.translate(12, (pad.t + Hh - pad.b) / 2); gx.rotate(-Math.PI / 2); gx.fillText('Flux density (mJy)', 0, 0); gx.restore();
+  gx.fillText(tx('Wavelength (µm)'), (pad.l + W - pad.r) / 2, Hh - 4);
+  gx.save(); gx.translate(12, (pad.t + Hh - pad.b) / 2); gx.rotate(-Math.PI / 2); gx.fillText(tx('Flux density (mJy)'), 0, 0); gx.restore();
   if (lo < 0 && hi > 0) { gx.strokeStyle = 'rgba(232,236,244,0.35)'; gx.beginPath(); gx.moveTo(pad.l, y(0)); gx.lineTo(W - pad.r, y(0)); gx.stroke(); }
   gx.save(); gx.beginPath(); gx.rect(pad.l, pad.t, W - pad.l - pad.r, Hh - pad.t - pad.b); gx.clip();
   // naive aperture (grey) for comparison

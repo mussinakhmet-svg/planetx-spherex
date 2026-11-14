@@ -11,6 +11,7 @@
 import { robustStats } from './spherex.js';
 import { paint } from './render.js';
 import { TARGETS } from './targets.js';
+import { tx } from './i18n-ui.js';
 
 const $ = id => document.getElementById(id);
 const ST = () => window.__st;
@@ -243,8 +244,8 @@ function drawHeat() {
   mags.forEach((m, i) => { if (i % 2 === 0) g.fillText(m.toFixed(2), pad.l - 6, pad.t + (i + 0.5) * ch + 4); });
   g.textAlign = 'center';
   shifts.forEach((s, j) => g.fillText(`${s}″`, pad.l + (j + 0.5) * cw, Hh - pad.b + 16));
-  g.fillText('Shift between the two passes (arcsec)', (pad.l + W - pad.r) / 2, Hh - 6);
-  g.save(); g.translate(14, (pad.t + Hh - pad.b) / 2); g.rotate(-Math.PI / 2); g.fillText('Injected brightness (AB mag)', 0, 0); g.restore();
+  g.fillText(tx('Shift between the two passes (arcsec)'), (pad.l + W - pad.r) / 2, Hh - 6);
+  g.save(); g.translate(14, (pad.t + Hh - pad.b) / 2); g.rotate(-Math.PI / 2); g.fillText(tx('Injected brightness (AB mag)'), 0, 0); g.restore();
   const big = shifts.findIndex(s => s / F.scale >= 2 * F.fwhm);
   const m50 = mag50(big >= 0 ? big : shifts.length - 1);
   $('iSummary').innerHTML = `
@@ -266,7 +267,7 @@ function drawCurve() {
   for (const f of [0, 0.25, 0.5, 0.75, 1]) { g.beginPath(); g.moveTo(pad.l, y(f)); g.lineTo(W - pad.r, y(f)); g.stroke(); g.textAlign = 'right'; g.fillText(`${f * 100}%`, pad.l - 6, y(f) + 4); }
   g.textAlign = 'center';
   for (let i = 0; i < mags.length; i += 2) g.fillText(mags[i].toFixed(1), x(mags[i]), Hh - pad.b + 16);
-  g.fillText('Injected brightness (AB mag, fainter →)', (pad.l + W - pad.r) / 2, Hh - 4);
+  g.fillText(tx('Injected brightness (AB mag, fainter →)'), (pad.l + W - pad.r) / 2, Hh - 4);
   const show = [[1, '#6fd3ff'], [3, '#9b76dc'], [5, '#ff8a4c']];
   const legend = [];
   for (const [j, col] of show) {

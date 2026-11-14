@@ -13,11 +13,12 @@ import { searchFrames, loadFrame, nativeCentroid, aperturePhot, robustStats, BAN
 import { makeGrid, mjdToDate, sepArcsec, fmtRa, fmtDec } from './wcs.js';
 import { pool } from './fits.js';
 import { paint } from './render.js';
+import { tx } from './i18n-ui.js';
 
 const $ = id => document.getElementById(id);
 const SCALE = NATIVE_SCALE / 2;          // arcsec per grid pixel, as in the Blink viewer
 const fmt = (x, d = 1) => (Number.isFinite(x) ? x.toFixed(d) : '—');
-const fmtDay = mjd => mjdToDate(mjd).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const fmtDay = mjd => mjdToDate(mjd).toLocaleDateString({ ru: 'ru-RU', kk: 'kk-KZ' }[document.documentElement.lang] || 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
 const OBJECTS = [
   { label: 'Pluto', naif: 999, note: 'V ≈ 14.5, about 35 AU. The object Clyde Tombaugh found by blinking in 1930.' },
@@ -178,7 +179,7 @@ function show() {
   g.strokeStyle = 'rgba(111,211,255,0.9)'; g.lineWidth = 1.5;
   g.beginPath(); g.arc(c, c, 2.2 * NATIVE_SCALE / SCALE * k, 0, Math.PI * 2); g.stroke();
   g.font = '600 12px "Golos Text", system-ui, sans-serif'; g.fillStyle = 'rgba(111,211,255,0.95)';
-  g.fillText('JPL prediction', c + 2.4 * NATIVE_SCALE / SCALE * k + 4, c - 4);
+  g.fillText(tx('JPL prediction'), c + 2.4 * NATIVE_SCALE / SCALE * k + 4, c - 4);
   const cap = $('tCap');
   if (T.mode === 'stack') {
     cap.innerHTML = `<b>Pass ${it.pass + 1}: ${fmtDay(it.a)} – ${fmtDay(it.b)}</b><span>Median of ${it.frames.length} cut-outs that follow ${T.obj.label}. Stars moved through and were removed; ${T.obj.label} stayed in the centre (S/N ${fmt(it.snr, 0)}).</span>`;
@@ -213,7 +214,7 @@ function drawTrack() {
   const cur = items()[T.idx];
   if (cur && T.mode === 'follow') { const r = cur.row, i = T.rows.indexOf(r); if (i >= 0) { g.strokeStyle = '#fff'; g.lineWidth = 2; g.beginPath(); g.arc(X(P[i][0]), Y(P[i][1]), 7, 0, Math.PI * 2); g.stroke(); } }
   g.fillStyle = '#95a2bf'; g.font = '11px "Golos Text", system-ui, sans-serif'; g.textAlign = 'left';
-  g.fillText(`${T.obj.label}'s path on the sky, ${fmtDay(T.rows[0].mjd)} – ${fmtDay(T.rows[T.rows.length - 1].mjd)}  (north up, east left; the loops are Earth's own yearly motion, parallax)`, 8, Hh - 8);
+  g.fillText(tx(`${T.obj.label}'s path on the sky, ${fmtDay(T.rows[0].mjd)} – ${fmtDay(T.rows[T.rows.length - 1].mjd)}  (north up, east left; the loops are Earth's own yearly motion, parallax)`), 8, Hh - 8);
   const bar = Math.pow(10, Math.floor(Math.log10(span / 3)));
   g.strokeStyle = '#e8ecf4'; g.beginPath(); g.moveTo(W - 20 - bar * sc, 16); g.lineTo(W - 20, 16); g.stroke(); g.textAlign = 'right'; g.fillStyle = '#e8ecf4';
   g.fillText(bar >= 1 ? `${bar}°` : `${(bar * 60).toFixed(0)}′`, W - 20, 30);

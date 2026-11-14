@@ -8,6 +8,8 @@
 // for the mass–radius relation; Crill et al. 2025 (ApJS 281, 10) for SPHEREx 5σ depth.
 // Code written with AI assistance (Claude), reviewed by team Sigma Boys.
 
+import { tx } from './i18n-ui.js';
+
 const $ = id => document.getElementById(id);
 const H = 6.62607015e-34, C = 2.99792458e8, KB = 1.380649e-23;
 const AU = 1.495978707e11, RSUN = 6.957e8, REARTH = 6.371e6, TSUN = 5772;
@@ -219,9 +221,9 @@ function draw(m) {
   g.strokeStyle = 'rgba(149,162,191,0.15)'; g.lineWidth = 1; g.fillStyle = '#95a2bf'; g.font = '11px "Golos Text", system-ui, sans-serif';
   for (let mg = Math.ceil(top); mg <= bottom; mg += (bottom - top > 12 ? 2 : 1)) { g.beginPath(); g.moveTo(pad.l, y(mg)); g.lineTo(W - pad.r, y(mg)); g.stroke(); g.textAlign = 'right'; g.fillText(String(mg), pad.l - 6, y(mg) + 4); }
   for (let l = 1; l <= 5; l += 0.5) { g.textAlign = 'center'; g.fillText(l % 1 ? '' : `${l}`, x(l), Hh - pad.b + 16); g.beginPath(); g.moveTo(x(l), pad.t); g.lineTo(x(l), Hh - pad.b); g.stroke(); }
-  g.textAlign = 'center'; g.fillText('Wavelength (µm)', (pad.l + W - pad.r) / 2, Hh - 4);
-  g.save(); g.translate(12, (pad.t + Hh - pad.b) / 2); g.rotate(-Math.PI / 2); g.fillText('AB magnitude (brighter ↑)', 0, 0); g.restore();
-  g.textAlign = 'left'; g.fillStyle = 'rgba(88,201,139,0.85)'; g.fillText('SPHEREx can see this', x(0.8), y(top) + 14);
+  g.textAlign = 'center'; g.fillText(tx('Wavelength (µm)'), (pad.l + W - pad.r) / 2, Hh - 4);
+  g.save(); g.translate(12, (pad.t + Hh - pad.b) / 2); g.rotate(-Math.PI / 2); g.fillText(tx('AB magnitude (brighter ↑)'), 0, 0); g.restore();
+  g.textAlign = 'left'; g.fillStyle = 'rgba(88,201,139,0.85)'; g.fillText(tx('SPHEREx can see this'), x(0.8), y(top) + 14);
   const line = (key, color, dash = [], width = 2) => {
     g.save(); g.beginPath(); g.setLineDash(dash); g.strokeStyle = color; g.lineWidth = width;
     let pen = false;

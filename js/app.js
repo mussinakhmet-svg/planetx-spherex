@@ -838,6 +838,7 @@ let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTime
 window.__app = { composite, show, setMode, items, stop, encode: async (frames, w, h, d) => (await import('./gif.js')).encodeGif(frames, w, h, d) };   // for exporting slide images
 
 setLang(initialLang());
+import('./i18n-ui.js').then(m => m.initUiI18n()).catch(e => console.error(e));
 buildTargets();
 startPlanet($('planet'));
 readUrl();

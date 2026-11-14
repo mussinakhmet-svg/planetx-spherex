@@ -39,13 +39,14 @@
 
 <main class="bench" id="bench">
   <aside class="panel controls" aria-label="Target">
-    <h2 data-i18n="pickTarget">Pick a target</h2>
-    <div class="targets" id="targets"></div>
-
     <form id="searchForm" class="search" autocomplete="off">
-      <label for="q" data-i18n="orEnter">or enter coordinates or a name</label>
-      <input id="q" name="q" type="text" placeholder="269.452 +4.693  or  Vega" spellcheck="false">
+      <h2 data-i18n="findTitle">Find something to inspect</h2>
+      <label for="q" data-i18n="searchLabel">Search for an object, or enter coordinates</label>
+      <input id="q" name="q" type="text" placeholder="Vega, Barnard's Star, or 269.452 +4.693" spellcheck="false">
       <p class="hint" data-i18n="coordHint">Degrees, or 17h57m48s +04°41′36″, or an object name.</p>
+
+      <h3 class="examples-title" data-i18n="tryExample">Or try one of our examples</h3>
+      <div class="targets" id="targets"></div>
       <div class="row split">
         <label class="field"><span data-i18n="fieldSize">Field of view</span>
           <select id="fov">
@@ -80,7 +81,7 @@
       <canvas id="sky" width="117" height="117"></canvas>
       <canvas id="overlay"></canvas>
       <div class="plate-empty" id="empty">
-        <p data-i18n="emptyHint">Pick a target on the left to load real SPHEREx images.</p>
+        <p data-i18n="emptyHint">Search for an object or pick an example on the left to load real SPHEREx images.</p>
       </div>
       <div class="caption" id="caption"></div>
       <div class="hover" id="hover" hidden></div>

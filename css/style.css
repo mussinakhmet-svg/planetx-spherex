@@ -296,3 +296,9 @@ body.view-page .hero, body.view-page #bench, body.view-page .notes { display: no
 #iBody[hidden] { display: none; }
 @media (max-width: 1000px) { .inject-grid { grid-template-columns: 1fr; } .stamps { grid-template-columns: 1fr 1fr 1fr; } .i-kpis { grid-template-columns: 1fr 1fr; } }
 .how.mini summary { padding: 8px 12px; font-size: 13px; } .how.mini .how-body { padding: 0 12px 12px; font-size: 12.5px; } .how.mini { margin-top: 10px; }
+
+/* search-first target picker */
+.search h2 { margin-bottom: 12px; }
+.search label[for="q"] { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.search #q { padding: 13px 14px; font-size: 16px; border-color: #3d4d75; }
+.examples-title { margin: 18px 0 8px; font: 600 13px/1.2 var(--text); color: var(--muted); }

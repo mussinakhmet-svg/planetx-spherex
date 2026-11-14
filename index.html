@@ -20,8 +20,10 @@
     <span class="brand-team">Sigma Boys</span>
   </a>
   <nav class="views" aria-label="Views">
-    <a href="#" id="tabViewer" aria-current="page" data-i18n="tabViewer">Blink viewer</a>
-    <a href="#sky" id="tabSky" data-i18n="tabSky">Sky map</a>
+    <a href="#" id="tabViewer" data-view="" aria-current="page" data-i18n="tabViewer">Blink viewer</a>
+    <a href="#sky" id="tabSky" data-view="sky" data-i18n="tabSky">Sky map</a>
+    <a href="#detect" data-view="detect">Could SPHEREx see Planet X?</a>
+    <a href="#inject" data-view="inject">Injection test</a>
   </nav>
   <nav class="lang" aria-label="Language">
     <button data-lang="en" aria-pressed="true">EN</button>
@@ -191,6 +193,9 @@
     <p class="muted small" data-i18n-html="skyCredit">Stars: Hipparcos, via <a href="https://github.com/ofrohn/d3-celestial" target="_blank" rel="noopener">d3-celestial</a> (Olaf Frohn, BSD licence), with its Milky Way outline and constellation lines. Footprints: SPHEREx, NASA/JPL-Caltech/IPAC, from IRSA.</p>
   </aside>
 </section>
+
+<main class="page" id="detectView" hidden aria-label="Could SPHEREx see Planet X?"></main>
+<main class="page" id="injectView" hidden aria-label="Injection test"></main>
 
 <section class="notes">
   <article>

@@ -12,7 +12,7 @@ watch the real SPHEREx images of that spot change over time, so moving and chang
 themselves away.
 
 ## What it does
-i
+
 | Feature | How it works |
 |---|---|
 | **Any sky position** | Degrees, sexagesimal (`17h57m48s +04°41′36″`) or an object name (resolved by SIMBAD). |
@@ -30,6 +30,8 @@ i
 | **Save PNG / GIF** | With the data credit burned in. |
 | **Sky map tab** | An interactive map of the whole sky (stars, constellations, Milky Way, RA/Dec grid, ecliptic, galactic plane, Messier objects). Drag, scroll or pinch to zoom, search by name or coordinates, click any spot. |
 | **SPHEREx coverage on the map** | For the picked spot the map draws the real footprint of every SPHEREx exposure within 0.5°, coloured by date. Filter by detector band, pick a survey pass, drag a date range on the weekly histogram, or press *Play the survey* to watch the passes build up. Click a footprint for its date, band and ID, then *Blink this spot*. |
+| **Could SPHEREx see Planet X?** | Sliders for mass (1–20 M⊕), distance (200–1000 AU), albedo and internal heat. Computes radius (Chen & Kipping 2017), equilibrium and effective temperature (Linder & Mordasini 2016), reflected sunlight plus Planck thermal emission over 0.75–5 µm, and compares the AB magnitude with the published SPHEREx 5σ depth (Crill et al. 2025). Shows DETECTABLE / NOT DETECTABLE, yearly parallax in arcsec and SPHEREx pixels, and every formula under *How we calculated this*. For the nominal Planet Nine the answer is honestly: not detectable, about 3 mag too faint. |
+| **Injection test: does our method work?** | Plants fake moving point sources (Gaussian with the PSF width measured from field stars) into the real stacked SPHEREx passes of the loaded field, runs the site's own search (late − early difference, matched filter on both lobes of the dipole, 5σ each) and reports FOUND / NOT FOUND. A completeness grid (brightness × shift, 20+ trials per cell) and curve show how faint and how slow a mover can be before we miss it; the same detector on empty sky gives the false-alarm rate. |
 | **Three languages** | English (default), Kazakh, Russian. |
 
 ## How it works
@@ -88,6 +90,8 @@ The 3D planet in the background is drawn by our own shader code, not generated b
 * Sun position for parallax: low-precision formula from the Astronomical Almanac.
 * Fonts: Unbounded and Golos Text (SIL Open Font License), via Google Fonts.
 * **Sky map background:** star positions, magnitudes and colours from the Hipparcos catalogue, the Milky Way outline, constellation lines and boundaries, and Messier objects, all from the **d3-celestial** data set by Olaf Frohn (BSD-3-Clause): https://github.com/ofrohn/d3-celestial — converted to `data/sky.json` and `data/stars8.json` by `tools/build-sky-data.py`. Only the data are used, not the d3-celestial code.
+* **Planet X physics:** Brown, M. E. & Batygin, K. 2021, *The Orbit of Planet Nine*, AJ 162, 219 (arXiv:2108.09868); Linder, E. F. & Mordasini, C. 2016, *Evolution and magnitudes of candidate Planet Nine*, A&A 589, A134 (arXiv:1602.07465); Chen, J. & Kipping, D. 2017, *Probabilistic Forecasting of the Masses and Radii of Other Worlds*, ApJ 834, 17 (arXiv:1603.08614).
+* **SPHEREx sensitivity:** Crill, B. P. et al. 2025, *The SPHEREx Sky Simulator*, ApJS 281, 10 (arXiv:2505.24856): 5σ point-source depth AB 18.5–19 (0.75–3.8 µm) and 16.6–18 (3.8–5 µm) per spectral channel.
 * Equatorial-to-galactic rotation: J2000 matrix from the Hipparcos catalogue introduction (ESA 1997).
 * No third-party code libraries are used.
 

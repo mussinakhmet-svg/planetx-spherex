@@ -836,14 +836,22 @@ buildTargets();
 startPlanet($('planet'));
 readUrl();
 
-// ---------------------------------------------------------------- views: Blink viewer / Sky map
+// ---------------------------------------------------------------- views (tabs): #sky, #detect, #inject, #fingerprint
+const VIEWS = { sky: ['skymap', () => import('./sky.js').then(m => m.openSky())],
+  detect: ['detectView', () => import('./detect.js').then(m => m.openDetect())],
+  inject: ['injectView', () => import('./inject.js').then(m => m.openInject())],
+  fingerprint: ['fpView', () => import('./fingerprint.js').then(m => m.openFingerprint())] };
 function applyView() {
-  const sky = location.hash.startsWith('#sky');
-  document.body.classList.toggle('view-sky', sky);
-  $('skymap').hidden = !sky;
-  $('tabSky').toggleAttribute('aria-current', sky); if (sky) $('tabSky').setAttribute('aria-current', 'page');
-  $('tabViewer').toggleAttribute('aria-current', !sky); if (!sky) $('tabViewer').setAttribute('aria-current', 'page');
-  if (sky) import('./sky.js').then(m => m.openSky()).catch(e => console.error(e));
+  const v = location.hash.replace(/^#/, '').split('/')[0];
+  const cur = VIEWS[v] ? v : '';
+  document.body.classList.toggle('view-sky', cur === 'sky');
+  document.body.classList.toggle('view-page', !!cur && cur !== 'sky');
+  for (const [k, [id]] of Object.entries(VIEWS)) { const el = $(id); if (el) el.hidden = k !== cur; }
+  for (const a of document.querySelectorAll('.views a')) {
+    if ((a.dataset.view || '') === cur) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  }
+  if (cur) VIEWS[cur][1]().catch(e => console.error(e));
+  if (cur && cur !== 'sky') window.scrollTo(0, 0);
 }
 window.addEventListener('hashchange', applyView);
 applyView();

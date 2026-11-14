@@ -815,6 +815,14 @@ function bindPanel() {
       setPick(j.ra, j.dec, j.name || q); flyTo(j.ra, j.dec, Math.min(S.fov, 8));
     } catch { st.textContent = t('skyNotFound', { q }); }
   });
+  $('skyLink').addEventListener('click', async () => {
+    clearTimeout(hashTimer);
+    const p = [`sky`, S.ra.toFixed(3), S.dec.toFixed(3), S.fov.toFixed(2)];
+    if (S.pick) p.push(S.pick.ra.toFixed(5), S.pick.dec.toFixed(5));
+    const url = `${location.origin}${location.pathname}#${p.join('/')}`;
+    try { await navigator.clipboard.writeText(url); $('skyLink').textContent = 'Link copied'; } catch { prompt('Copy this link', url); }
+    setTimeout(() => { $('skyLink').textContent = 'Copy link'; }, 1800);
+  });
   $('skyZoomIn').addEventListener('click', () => zoomAt(0.6));
   $('skyZoomOut').addEventListener('click', () => zoomAt(1 / 0.6));
   $('skyReset').addEventListener('click', () => flyTo(266.4, -29.0, 120));

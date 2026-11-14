@@ -22,8 +22,12 @@
   <nav class="views" aria-label="Views">
     <a href="#" id="tabViewer" data-view="" aria-current="page" data-i18n="tabViewer">Blink viewer</a>
     <a href="#sky" id="tabSky" data-view="sky" data-i18n="tabSky">Sky map</a>
+    <a href="#track" data-view="track">Track an object</a>
     <a href="#detect" data-view="detect">Could SPHEREx see Planet X?</a>
     <a href="#inject" data-view="inject">Injection test</a>
+    <a href="#fingerprint" data-view="fingerprint">Spectral fingerprint</a>
+    <a href="#practice" data-view="practice">Practice</a>
+    <a href="#classroom" data-view="classroom">Classroom</a>
   </nav>
   <nav class="lang" aria-label="Language">
     <button data-lang="en" aria-pressed="true">EN</button>
@@ -145,6 +149,7 @@
       <button type="button" id="skyZoomOut" aria-label="Zoom out">−</button>
       <button type="button" id="skyReset" data-i18n="skyReset">Whole sky</button>
       <button type="button" id="skySave" data-i18n="skySave">Save PNG</button>
+      <button type="button" id="skyLink">Copy link</button>
     </div>
     <div class="sky-tip" id="skyTip" hidden></div>
     <p class="sky-loading" id="skyLoading" hidden data-i18n="skyLoadingData">Loading the star map…</p>
@@ -213,6 +218,10 @@
 
 <main class="page" id="detectView" hidden aria-label="Could SPHEREx see Planet X?"></main>
 <main class="page" id="injectView" hidden aria-label="Injection test"></main>
+<main class="page" id="fpView" hidden aria-label="Spectral fingerprint"></main>
+<main class="page" id="trackView" hidden aria-label="Track a solar-system object"></main>
+<main class="page" id="practiceView" hidden aria-label="Practice"></main>
+<main class="page" id="classView" hidden aria-label="Classroom"></main>
 
 <section class="notes">
   <article>

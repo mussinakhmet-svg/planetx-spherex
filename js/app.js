@@ -166,8 +166,9 @@ async function run(opts = {}) {
   st.timing = { secs: Number(secs), mb: Number(mb), frames: st.loaded.length };
   $('share').hidden = false;
   computeLevels(); buildStacks();
-  st.pick = st.target ? { target: true } : null;
+  st.pick = st.pendingPick || (st.target ? { target: true } : null); st.pendingPick = null;   // a shared link can carry a picked source
   if (st.pick) { measureMotion(); buildSpectrum(); }
+  window.dispatchEvent(new CustomEvent('fieldloaded'));
   if (st.stacks.length >= 2) { setMode('epochs'); play(); } else { show(); play(); }
 }
 
@@ -736,7 +737,8 @@ $('plate').addEventListener('click', e => {
     for (const f of st.loaded) { const c = nativeCentroid(f, ra, dec, 2); if (c) { st.pick = { ra: c.ra, dec: c.dec }; break; } }
   }
   st.offsets = null;
-  measureMotion(); buildSpectrum(); show();
+  measureMotion(); buildSpectrum(); show(); writeUrl();
+  window.dispatchEvent(new CustomEvent('sourcepicked'));
 });
 
 // ------------------------------------------------------------------ Gaia overlay
@@ -764,7 +766,9 @@ function writeUrl() {
   else { p.set('ra', st.ra.toFixed(5)); p.set('dec', st.dec.toFixed(5)); }
   p.set('fov', String(st.fov)); if (st.band) p.set('band', String(st.band)); if (st.max !== 48) p.set('n', String(st.max));
   if (lang !== 'en') p.set('lang', lang);
-  const keep = new URLSearchParams(location.search).get('collections'); if (keep) p.set('collections', keep);
+  if (st.pick && Number.isFinite(st.pick.ra)) p.set('pick', `${st.pick.ra.toFixed(6)},${st.pick.dec.toFixed(6)}`);
+  const cur = new URLSearchParams(location.search);
+  for (const k of ['collections', 'mission']) { const v = cur.get(k); if (v) p.set(k, v); }
   history.replaceState(null, '', `${location.pathname}?${p}${location.hash}`);   // keep the open tab
 }
 
@@ -774,6 +778,8 @@ function readUrl() {
   if (p.get('fov') && [...$('fov').options].some(o => o.value === p.get('fov'))) $('fov').value = p.get('fov');
   if (p.get('n') && [...$('maxFrames').options].some(o => o.value === p.get('n'))) $('maxFrames').value = p.get('n');
   if (p.get('band')) st.band = Math.max(0, Math.min(6, Number(p.get('band')) || 0));
+  const pk = (p.get('pick') || '').split(',').map(Number);
+  st.pendingPick = pk.length === 2 && pk.every(Number.isFinite) ? { ra: pk[0], dec: pk[1] } : null;
   const tg = p.get('t') && targetById(p.get('t'));
   if (tg) { if (!p.get('band')) st.band = tg.band; if (!p.get('fov')) $('fov').value = String(tg.fov); $('q').value = tg.name; buildBands(); return run({ target: tg }); }
   if (p.get('name')) { $('q').value = p.get('name'); buildBands(); return run(); }
@@ -840,7 +846,10 @@ readUrl();
 const VIEWS = { sky: ['skymap', () => import('./sky.js').then(m => m.openSky())],
   detect: ['detectView', () => import('./detect.js').then(m => m.openDetect())],
   inject: ['injectView', () => import('./inject.js').then(m => m.openInject())],
-  fingerprint: ['fpView', () => import('./fingerprint.js').then(m => m.openFingerprint())] };
+  fingerprint: ['fpView', () => import('./fingerprint.js').then(m => m.openFingerprint())],
+  track: ['trackView', () => import('./track.js').then(m => m.openTrack())],
+  practice: ['practiceView', () => import('./practice.js').then(m => m.openPractice())],
+  classroom: ['classView', () => import('./classroom.js').then(m => m.openClassroom())] };
 function applyView() {
   const v = location.hash.replace(/^#/, '').split('/')[0];
   const cur = VIEWS[v] ? v : '';
@@ -855,3 +864,4 @@ function applyView() {
 }
 window.addEventListener('hashchange', applyView);
 applyView();
+if (new URLSearchParams(location.search).get('mission')) import('./practice.js').then(m => m.initMission()).catch(e => console.error(e));

@@ -67,6 +67,7 @@ const EN = {
   skyLMw: 'Milky Way', skyLLines: 'Constellations', skyLNames: 'Constellation names', skyLBounds: 'Boundaries',
   skyLGrid: 'RA/Dec grid', skyLEcl: 'Ecliptic', skyLGal: 'Galactic plane', skyLStars: 'Star names',
   skyLMessier: 'Messier objects', skyLTargets: 'Challenge targets', skyLFp: 'SPHEREx footprints',
+  skyLP9: 'Planet Nine probability', skyLP9Orbit: 'Planet Nine orbit', skyLTno: 'Extreme TNOs',
 };
 
 const RU = {
@@ -153,6 +154,7 @@ const RU = {
   skyLMw: 'Млечный Путь', skyLLines: 'Созвездия', skyLNames: 'Названия созвездий', skyLBounds: 'Границы',
   skyLGrid: 'Сетка RA/Dec', skyLEcl: 'Эклиптика', skyLGal: 'Плоскость Галактики', skyLStars: 'Имена звёзд',
   skyLMessier: 'Объекты Мессье', skyLTargets: 'Цели челленджа', skyLFp: 'Контуры SPHEREx',
+  skyLP9: 'Вероятность Planet Nine', skyLP9Orbit: 'Орбита Planet Nine', skyLTno: 'Экстремальные ТНО',
   skyFind: 'Найти', skyReset: 'Всё небо', skySave: 'Сохранить PNG', skyLoadingData: 'Загружаем карту звёзд…', skyField: 'Поле',
   skyPickTitle: 'Выбранная точка', skyLoadFp: 'Показать снимки SPHEREx здесь', skyBlink: 'Мигнуть эту точку',
   skyCoverage: 'Покрытие SPHEREx', skyBandsTitle: 'Диапазоны детекторов', skyTimeTitle: 'Время',
@@ -244,6 +246,7 @@ const KK = {
   skyLMw: 'Құс жолы', skyLLines: 'Шоқжұлдыздар', skyLNames: 'Шоқжұлдыз атаулары', skyLBounds: 'Шекаралар',
   skyLGrid: 'RA/Dec торы', skyLEcl: 'Эклиптика', skyLGal: 'Галактика жазықтығы', skyLStars: 'Жұлдыз атаулары',
   skyLMessier: 'Мессье нысандары', skyLTargets: 'Челлендж нысаналары', skyLFp: 'SPHEREx контурлары',
+  skyLP9: 'Planet Nine ықтималдығы', skyLP9Orbit: 'Planet Nine орбитасы', skyLTno: 'Экстремалды ТНН',
   skyFind: 'Табу', skyReset: 'Бүкіл аспан', skySave: 'PNG сақтау', skyLoadingData: 'Жұлдыз картасы жүктелуде…', skyField: 'Өріс',
   skyPickTitle: 'Таңдалған нүкте', skyLoadFp: 'Осы жердегі SPHEREx түсірілімдері', skyBlink: 'Осы нүктені жыпылықтату',
   skyCoverage: 'SPHEREx қамтуы', skyBandsTitle: 'Детектор диапазондары', skyTimeTitle: 'Уақыт',

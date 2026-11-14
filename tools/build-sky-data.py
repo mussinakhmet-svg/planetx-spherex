@@ -41,7 +41,7 @@ for r in bright:
 cons = []
 for f in L('constellations.json')['features']:
     p = f['properties']; lon, lat = f['geometry']['coordinates']
-    cons.append({'id': f['id'] if 'id' in f else p['desig'], 'name': p['en'], 'ru': p.get('ru', p['en']), 'ra': ra(lon), 'dec': round(lat, 2), 'rank': int(p.get('rank', 3))})
+    cons.append({'id': f['id'] if 'id' in f else p['desig'], 'name': p['name'], 'ru': p.get('ru', p['en']), 'ra': ra(lon), 'dec': round(lat, 2), 'rank': int(p.get('rank', 3))})
 lines = {f['id']: [[[ra(x), round(y, 3)] for x, y in seg] for seg in f['geometry']['coordinates']] for f in L('constellations.lines.json')['features']}
 bounds = {}
 for f in L('constellations.bounds.json')['features']:

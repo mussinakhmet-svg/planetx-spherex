@@ -765,7 +765,7 @@ function writeUrl() {
   p.set('fov', String(st.fov)); if (st.band) p.set('band', String(st.band)); if (st.max !== 48) p.set('n', String(st.max));
   if (lang !== 'en') p.set('lang', lang);
   const keep = new URLSearchParams(location.search).get('collections'); if (keep) p.set('collections', keep);
-  history.replaceState(null, '', `${location.pathname}?${p}`);
+  history.replaceState(null, '', `${location.pathname}?${p}${location.hash}`);   // keep the open tab
 }
 
 function readUrl() {

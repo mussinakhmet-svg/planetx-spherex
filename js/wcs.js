@@ -139,10 +139,12 @@ export function parseCoords(text) {
 }
 
 export function fmtRa(ra) {
-  const h = ra / 15, hh = Math.floor(h), m = (h - hh) * 60, mm = Math.floor(m), s = (m - mm) * 60;
+  const tot = Math.round((((ra % 360) + 360) % 360) / 15 * 3600 * 100) / 100;   // seconds of time, 0.01 s
+  const hh = Math.floor(tot / 3600) % 24, mm = Math.floor((tot % 3600) / 60), s = tot % 60;
   return `${String(hh).padStart(2, '0')}h${String(mm).padStart(2, '0')}m${s.toFixed(2).padStart(5, '0')}s`;
 }
 export function fmtDec(dec) {
-  const sg = dec < 0 ? '−' : '+', a = Math.abs(dec), dd = Math.floor(a), m = (a - dd) * 60, mm = Math.floor(m), s = (m - mm) * 60;
+  const sg = dec < 0 ? '−' : '+', tot = Math.round(Math.abs(dec) * 36000) / 10;   // arcsec, 0.1″
+  const dd = Math.floor(tot / 3600), mm = Math.floor((tot % 3600) / 60), s = tot % 60;
   return `${sg}${String(dd).padStart(2, '0')}°${String(mm).padStart(2, '0')}′${s.toFixed(1).padStart(4, '0')}″`;
 }

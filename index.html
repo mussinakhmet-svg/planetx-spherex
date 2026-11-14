@@ -183,6 +183,22 @@
       <div id="skySel" class="sky-sel" hidden></div>
     </section>
     <section class="card">
+      <h2>Where could Planet X be?</h2>
+      <p class="muted small">Glow: where Planet Nine is most likely on the sky, from the orbit fitted by Brown &amp; Batygin (2021) to the clustered extreme TNOs. Dashed line: its nominal orbit. Green diamonds: those TNOs today. Click anywhere, then <i>Blink this spot</i>.</p>
+      <button type="button" class="ghost small" id="skyP9Go">Fly to the most likely region</button>
+      <p class="sky-status" id="skyP9Status"></p>
+      <details class="how mini">
+        <summary>How we calculated this</summary>
+        <div class="how-body">
+          <p>We draw 60 000 orbits from the published fit: semimajor axis 380 (+140/−80) AU and perihelion 300 (+85/−60) AU (log-normal), inclination 16 ± 5°, ascending node 97° and longitude of perihelion 254° (each with a ±20° spread that we assume, because the paper gives no percentiles for them). On each orbit the planet is put at a random <i>time</i> (uniform mean anomaly), so it spends most time, and is most likely, near aphelion. The sky positions are binned in 1° cells and smoothed by 2°.</p>
+          <p>The paper reports its density peak near RA ≈ 45°; our simpler sampling peaks near RA ≈ 60–70°. Treat the glow as a guide to the band, not a precise prediction.</p>
+          <p>TNO positions: osculating elements from the JPL Small-Body Database, moved to today with two-body Kepler motion and seen from Earth. Good to a fraction of a degree, plenty for this map.</p>
+          <p>Background stars: the ~8 900 stars brighter than magnitude 6.5 (Hipparcos; the same depth as the Yale Bright Star Catalogue). Fainter stars appear only when you zoom in.</p>
+          <p><a href="https://arxiv.org/abs/2108.09868" target="_blank" rel="noopener">Brown &amp; Batygin 2021, AJ 162, 219</a> · <a href="https://ssd-api.jpl.nasa.gov/doc/sbdb.html" target="_blank" rel="noopener">JPL SBDB API</a></p>
+        </div>
+      </details>
+    </section>
+    <section class="card">
       <h2 data-i18n="skyGoTo">Challenge targets</h2>
       <div id="skyTargets" class="chips"></div>
     </section>

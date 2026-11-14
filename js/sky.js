@@ -8,7 +8,7 @@
 // Code written with AI assistance (Claude), reviewed and tested by team Sigma Boys.
 
 import { searchFrames, BANDS } from './spherex.js';
-import { parseCoords, fmtRa, fmtDec, mjdToDate } from './wcs.js';
+import { parseCoords, fmtRa, fmtDec, mjdToDate, sunVector } from './wcs.js';
 import { TARGETS } from './targets.js';
 import { t, lang } from './i18n.js';
 
@@ -34,7 +34,7 @@ const rampAt = f => { f = clamp(f, 0, 1) * (RAMP.length - 1); const i = Math.min
 const S = {
   ready: false, data: null, faint: null, faintLoading: false,
   ra: 266.4, dec: -29.0, fov: 120, W: 0, H: 0, dpr: 1,
-  layers: { mw: true, lines: true, names: true, bounds: false, grid: true, ecl: true, gal: false, starNames: true, messier: true, targets: true, fp: true },
+  layers: { mw: true, lines: true, names: true, bounds: false, grid: true, ecl: true, gal: false, starNames: true, messier: true, targets: true, fp: true, p9: true, p9orbit: true, tno: true },
   pick: null, hover: null, fp: [], fpCenter: null, fpBusy: false, fpSel: null,
   bands: new Set([1, 2, 3, 4, 5, 6]), range: null, play: null, raf: 0, fly: null,
 };
@@ -64,6 +64,91 @@ function unproj(sx, sy) {
   const z = (4 - r2) / (4 + r2), f = (1 + z) / 2, x = X * f, y = Y * f;
   return toRaDec([x * E[0] + y * N[0] + z * C[0], x * E[1] + y * N[1] + z * C[1], x * E[2] + y * N[2] + z * C[2]]);
 }
+
+
+// ------------------------------------------------------------------ Planet Nine: where could it be?
+// Brown & Batygin (2021, AJ 162, 219): a = 380 (+140/−80) AU, q = 300 (+85/−60) AU, i = 16 ± 5°,
+// Ω = 97° (median), ϖ = 254° (maximum likelihood). We draw orbits from these (log-normal for a and q,
+// normal for the angles; the ±20° spreads of Ω and ϖ are our assumption, the paper gives no
+// percentiles for them), put the planet at a random time along each orbit (mean anomaly uniform in
+// time, so it lingers near aphelion), and bin the sky positions. Seeded, so every visitor sees the same map.
+const P9 = { a: 380, sLnA: 0.25, q: 300, sLnQ: 0.22, i: 16, sI: 5, om: 97, sOm: 20, varpi: 254, sVarpi: 20, N: 60000 };
+let p9Tex = null, p9Layer = null, p9Peak = null, p9Orbit = null;
+function gauss(r) { const u = Math.max(1e-12, r()), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+function seeded(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+/** Heliocentric ecliptic J2000 position (AU) from elements in degrees, mean anomaly M in degrees. */
+function keplerXYZ(a, e, iD, omD, wD, MD) {
+  const M = ((MD % 360) + 360) % 360 * D2R;
+  let E = e < 0.8 ? M : Math.PI;
+  for (let k = 0; k < 50; k++) { const dE = (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E)); E -= dE; if (Math.abs(dE) < 1e-12) break; }
+  const nu = 2 * Math.atan2(Math.sqrt(1 + e) * Math.sin(E / 2), Math.sqrt(1 - e) * Math.cos(E / 2)), r = a * (1 - e * Math.cos(E));
+  const i = iD * D2R, om = omD * D2R, u = wD * D2R + nu;
+  return [r * (Math.cos(om) * Math.cos(u) - Math.sin(om) * Math.sin(u) * Math.cos(i)), r * (Math.sin(om) * Math.cos(u) + Math.cos(om) * Math.sin(u) * Math.cos(i)), r * Math.sin(u) * Math.sin(i)];
+}
+const eclToEq = ([x, y, z]) => [x, y * Math.cos(EPS) - z * Math.sin(EPS), y * Math.sin(EPS) + z * Math.cos(EPS)];
+function buildP9() {
+  const r = seeded(97254), W = 360, Hh = 180, h = new Float32Array(W * Hh);
+  for (let k = 0; k < P9.N; k++) {
+    const a = P9.a * Math.exp(P9.sLnA * gauss(r));
+    const q = Math.min(0.95 * a, Math.max(150, P9.q * Math.exp(P9.sLnQ * gauss(r))));
+    const e = 1 - q / a, i = clamp(P9.i + P9.sI * gauss(r), 0, 40), om = P9.om + P9.sOm * gauss(r), vp = P9.varpi + P9.sVarpi * gauss(r);
+    const [ra, dec] = toRaDec(eclToEq(keplerXYZ(a, e, i, om, vp - om, r() * 360)));
+    h[Math.min(Hh - 1, Math.floor(90 - dec)) * W + Math.min(W - 1, Math.floor(ra))]++;
+  }
+  // smooth with a Gaussian of 2 bins (wrap in RA), then normalise to the peak
+  const blur = (src, horiz) => { const out = new Float32Array(W * Hh), ker = [-4, -3, -2, -1, 0, 1, 2, 3, 4].map(d => [d, Math.exp(-d * d / 8)]);
+    for (let y = 0; y < Hh; y++) for (let x = 0; x < W; x++) { let s = 0, w = 0; for (const [d, k] of ker) { const xx = horiz ? (x + d + W) % W : x, yy = horiz ? y : y + d; if (yy < 0 || yy >= Hh) continue; s += src[yy * W + xx] * k; w += k; } out[y * W + x] = s / w; } return out; };
+  p9Tex = blur(blur(h, true), false);
+  let mx = 0, at = 0; for (let k = 0; k < p9Tex.length; k++) if (p9Tex[k] > mx) { mx = p9Tex[k]; at = k; }
+  for (let k = 0; k < p9Tex.length; k++) p9Tex[k] /= mx;
+  p9Peak = { ra: (at % W) + 0.5, dec: 90 - Math.floor(at / W) - 0.5 };
+  const eN = 1 - P9.q / P9.a;
+  p9Orbit = []; for (let m = 0; m <= 360; m += 2) p9Orbit.push(toRaDec(eclToEq(keplerXYZ(P9.a, eN, P9.i, P9.om, P9.varpi - P9.om, m))));
+  p9Layer = document.createElement('canvas');
+}
+function drawP9() {
+  if (!p9Tex) buildP9();
+  const step = S.fov < 30 ? 6 : 4, w = Math.ceil(S.W / step), h = Math.ceil(S.H / step);
+  if (p9Layer.width !== w || p9Layer.height !== h) { p9Layer.width = w; p9Layer.height = h; }
+  const g = p9Layer.getContext('2d'), img = g.createImageData(w, h), px = img.data;
+  for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) {
+    const X = (cx - (i + 0.5) * step) / scale, Y = (cy - (j + 0.5) * step) / scale, r2 = X * X + Y * Y, z = (4 - r2) / (4 + r2);
+    if (z < LIMIT) continue;
+    const f = (1 + z) / 2, x = X * f, y = Y * f;
+    const vx = x * E[0] + y * N[0] + z * C[0], vy = x * E[1] + y * N[1] + z * C[1], vz = x * E[2] + y * N[2] + z * C[2];
+    const ra = ((Math.atan2(vy, vx) * R2D) + 360) % 360, dec = Math.asin(clamp(vz, -1, 1)) * R2D;
+    const fx = ra - 0.5, fy = clamp(90 - dec - 0.5, 0, 178.999), x0 = Math.floor(fx), y0 = Math.floor(fy), ux = fx - x0, uy = fy - y0;
+    const xa = (x0 + 360) % 360, xb = (x0 + 361) % 360;
+    const t = (p9Tex[y0 * 360 + xa] * (1 - ux) + p9Tex[y0 * 360 + xb] * ux) * (1 - uy) + (p9Tex[(y0 + 1) * 360 + xa] * (1 - ux) + p9Tex[(y0 + 1) * 360 + xb] * ux) * uy;
+    if (t < 0.03) continue;
+    const o = (j * w + i) * 4, [cr, cg, cb] = t > 0.5 ? [255, 120 + (t - 0.5) * 140, 70] : [190 + t * 130, 70 + t * 100, 90];
+    px[o] = cr; px[o + 1] = cg; px[o + 2] = cb; px[o + 3] = Math.min(255, 18 + t * 115);
+  }
+  g.putImageData(img, 0, 0);
+  ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(p9Layer, 0, 0, w * step, h * step); ctx.restore();
+}
+
+// Extreme TNOs from the JPL Small-Body Database, propagated with two-body Kepler motion to today.
+let tnos = null, tnoLoading = false;
+async function loadTnos() {
+  if (tnos || tnoLoading) return; tnoLoading = true; setP9Status('Getting orbits of extreme TNOs from the JPL Small-Body Database…');
+  try {
+    const j = await (await fetch('/api/sbdb')).json();
+    const now = new Date(), jd = now.getTime() / 864e5 + 2440587.5, year = 2000 + (jd - 2451545) / 365.25;
+    const sun = sunVector(year);                                            // geocentric Sun, equatorial AU
+    tnos = (j.objects || []).filter(o => !o.error).map(o => {
+      const h = eclToEq(keplerXYZ(o.a, o.e, o.i, o.om, o.w, o.ma + o.n * (jd - o.epoch)));
+      const geo = [h[0] + sun[0], h[1] + sun[1], h[2] + sun[2]];             // Earth = −Sun
+      const [ra, dec] = toRaDec(geo);
+      const rest = o.name.replace(/^\d+\s*/, '');
+      const short = rest.startsWith('(') ? rest.replace(/[()]/g, '') : rest.replace(/\s*\(.*\)/, '');
+      return { name: short, full: o.name, ra, dec, r: Math.hypot(...h), a: o.a, q: o.q };
+    });
+    setP9Status(`${tnos.length} extreme TNOs placed for ${now.toISOString().slice(0, 10)} (JPL SBDB elements, Kepler motion).`);
+  } catch (e) { console.error(e); setP9Status('The JPL Small-Body Database did not answer; TNO positions are not shown.'); tnos = []; }
+  draw();
+}
+function setP9Status(t) { const el = $('skyP9Status'); if (el) el.textContent = t; }
 
 // ------------------------------------------------------------------ data
 async function loadData() {
@@ -194,6 +279,7 @@ function draw() {
   ctx.fillStyle = bg; ctx.fillRect(0, 0, S.W, S.H);
 
   if (L.mw) drawMilkyWay();
+  if (L.p9) drawP9();
 
   // horizon of the view (the edge of the drawn hemisphere)
   const edge = 2 * Math.sqrt((1 - LIMIT) / (1 + LIMIT)) * scale;
@@ -232,6 +318,20 @@ function draw() {
     ctx.stroke();
   }
 
+  if (L.p9orbit) {
+    if (!p9Orbit) buildP9();
+    ctx.setLineDash([8, 6]); ctx.strokeStyle = 'rgba(255,138,76,0.8)'; ctx.lineWidth = 1.5; ctx.beginPath(); polyline(p9Orbit); ctx.stroke(); ctx.setLineDash([]);
+    const ap = proj(...p9Orbit[90]);
+    if (ap) { ctx.fillStyle = '#ff8a4c'; ctx.beginPath(); ctx.arc(ap[0], ap[1], 4, 0, Math.PI * 2); ctx.fill(); label('Planet Nine aphelion (nominal orbit)', ap[0], ap[1], { color: '#ffb48a', size: 11, weight: 600 }); }
+  }
+  if (L.tno) {
+    if (!tnos) loadTnos();
+    else for (const o of tnos) {
+      const p = proj(o.ra, o.dec); if (!p) continue;
+      ctx.fillStyle = '#9fe3c0'; ctx.beginPath(); ctx.moveTo(p[0], p[1] - 5); ctx.lineTo(p[0] + 5, p[1]); ctx.lineTo(p[0], p[1] + 5); ctx.lineTo(p[0] - 5, p[1]); ctx.closePath(); ctx.fill();
+      if (S.fov < 170) label(o.name, p[0], p[1], { color: 'rgba(170,235,200,0.95)', size: 11, weight: 600 });
+    }
+  }
   if (L.fp && S.fp.length) drawFootprints();
 
   // stars
@@ -517,6 +617,7 @@ function setPick(ra, dec, name = '') { S.pick = { ra, dec, name }; renderPick();
 function nearestNamedObject(sx, sy) {
   let best = null, bd = 14;
   for (const tg of TARGETS) { const p = proj(tg.ra, tg.dec); if (p) { const d = Math.hypot(p[0] - sx, p[1] - sy); if (d < bd) { bd = d; best = { ra: tg.ra, dec: tg.dec, name: tg.name }; } } }
+  if (tnos && S.layers.tno) for (const o of tnos) { const p = proj(o.ra, o.dec); if (p) { const d = Math.hypot(p[0] - sx, p[1] - sy); if (d < bd) { bd = d; best = { ra: o.ra, dec: o.dec, name: `${o.full} · ${o.r.toFixed(0)} AU from the Sun` }; } } }
   if (best) return best;
   if (S.fov < 100) for (const m of S.data.messier) { const p = proj(m.ra, m.dec); if (p) { const d = Math.hypot(p[0] - sx, p[1] - sy); if (d < bd) { bd = d; best = { ra: m.ra, dec: m.dec, name: m.alt ? `${m.id} · ${m.alt}` : m.id }; } } }
   if (best) return best;
@@ -676,7 +777,7 @@ function clickAt(sx, sy) {
 }
 
 // ------------------------------------------------------------------ panel wiring
-const LAYERS = [['mw', 'skyLMw'], ['lines', 'skyLLines'], ['names', 'skyLNames'], ['bounds', 'skyLBounds'], ['grid', 'skyLGrid'], ['ecl', 'skyLEcl'], ['gal', 'skyLGal'], ['starNames', 'skyLStars'], ['messier', 'skyLMessier'], ['targets', 'skyLTargets'], ['fp', 'skyLFp']];
+const LAYERS = [['mw', 'skyLMw'], ['lines', 'skyLLines'], ['names', 'skyLNames'], ['bounds', 'skyLBounds'], ['grid', 'skyLGrid'], ['ecl', 'skyLEcl'], ['gal', 'skyLGal'], ['starNames', 'skyLStars'], ['messier', 'skyLMessier'], ['targets', 'skyLTargets'], ['fp', 'skyLFp'], ['p9', 'skyLP9'], ['p9orbit', 'skyLP9Orbit'], ['tno', 'skyLTno']];
 function syncLayerChecks() { for (const [k] of LAYERS) { const el = document.querySelector(`[data-layer="${k}"]`); if (el) el.checked = S.layers[k]; } }
 
 function buildPanel() {
@@ -731,6 +832,11 @@ function bindPanel() {
     location.href = `./?ra=${S.pick.ra.toFixed(6)}&dec=${S.pick.dec.toFixed(6)}${band ? `&band=${band}` : ''}`;
   });
   $('skyPlay').addEventListener('click', () => (S.play ? stopPlay() : startPlay()));
+  $('skyP9Go').addEventListener('click', () => {
+    if (!p9Peak) buildP9();
+    S.layers.p9 = S.layers.p9orbit = S.layers.tno = true; syncLayerChecks();
+    setPick(p9Peak.ra, p9Peak.dec, 'Most likely Planet Nine region (model peak)'); flyTo(p9Peak.ra, p9Peak.dec, 110);
+  });
   window.addEventListener('resize', resize);
   window.addEventListener('langchange', () => { buildPanel(); drawHist(); draw(); });
 }

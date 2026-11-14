@@ -12,7 +12,7 @@ watch the real SPHEREx images of that spot change over time, so moving and chang
 themselves away.
 
 ## What it does
-
+i
 | Feature | How it works |
 |---|---|
 | **Any sky position** | Degrees, sexagesimal (`17h57m48s +04°41′36″`) or an object name (resolved by SIMBAD). |

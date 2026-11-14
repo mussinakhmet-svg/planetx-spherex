@@ -28,6 +28,8 @@ themselves away.
 | **Shareable, embeddable URLs** | `?ra=269.452&dec=4.693&fov=6&band=2`, `?t=barnard`, `?name=Vega`. |
 | **Gaia DR3 overlay** | ESA Gaia stars, moved to each exposure's date. |
 | **Save PNG / GIF** | With the data credit burned in. |
+| **Sky map tab** | An interactive map of the whole sky (stars, constellations, Milky Way, RA/Dec grid, ecliptic, galactic plane, Messier objects). Drag, scroll or pinch to zoom, search by name or coordinates, click any spot. |
+| **SPHEREx coverage on the map** | For the picked spot the map draws the real footprint of every SPHEREx exposure within 0.5°, coloured by date. Filter by detector band, pick a survey pass, drag a date range on the weekly histogram, or press *Play the survey* to watch the passes build up. Click a footprint for its date, band and ID, then *Blink this spot*. |
 | **Three languages** | English (default), Kazakh, Russian. |
 
 ## How it works
@@ -85,6 +87,8 @@ The 3D planet in the background is drawn by our own shader code, not generated b
 * Target astrometry: Gaia DR3 (Barnard's Star); Kirkpatrick et al. 2021 (WISE 0855−0714); SIMBAD (others).
 * Sun position for parallax: low-precision formula from the Astronomical Almanac.
 * Fonts: Unbounded and Golos Text (SIL Open Font License), via Google Fonts.
+* **Sky map background:** star positions, magnitudes and colours from the Hipparcos catalogue, the Milky Way outline, constellation lines and boundaries, and Messier objects, all from the **d3-celestial** data set by Olaf Frohn (BSD-3-Clause): https://github.com/ofrohn/d3-celestial — converted to `data/sky.json` and `data/stars8.json` by `tools/build-sky-data.py`. Only the data are used, not the d3-celestial code.
+* Equatorial-to-galactic rotation: J2000 matrix from the Hipparcos catalogue introduction (ESA 1997).
 * No third-party code libraries are used.
 
 This project is not affiliated with or endorsed by NASA.

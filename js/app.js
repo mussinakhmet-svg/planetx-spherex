@@ -835,3 +835,15 @@ setLang(initialLang());
 buildTargets();
 startPlanet($('planet'));
 readUrl();
+
+// ---------------------------------------------------------------- views: Blink viewer / Sky map
+function applyView() {
+  const sky = location.hash.startsWith('#sky');
+  document.body.classList.toggle('view-sky', sky);
+  $('skymap').hidden = !sky;
+  $('tabSky').toggleAttribute('aria-current', sky); if (sky) $('tabSky').setAttribute('aria-current', 'page');
+  $('tabViewer').toggleAttribute('aria-current', !sky); if (!sky) $('tabViewer').setAttribute('aria-current', 'page');
+  if (sky) import('./sky.js').then(m => m.openSky()).catch(e => console.error(e));
+}
+window.addEventListener('hashchange', applyView);
+applyView();

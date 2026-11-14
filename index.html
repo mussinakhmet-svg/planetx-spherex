@@ -19,6 +19,10 @@
     <span class="brand-name" id="brandName">InfraBlink</span>
     <span class="brand-team">Sigma Boys</span>
   </a>
+  <nav class="views" aria-label="Views">
+    <a href="#" id="tabViewer" aria-current="page" data-i18n="tabViewer">Blink viewer</a>
+    <a href="#sky" id="tabSky" data-i18n="tabSky">Sky map</a>
+  </nav>
   <nav class="lang" aria-label="Language">
     <button data-lang="en" aria-pressed="true">EN</button>
     <button data-lang="kk" aria-pressed="false">ҚАЗ</button>
@@ -124,6 +128,69 @@
     </section>
   </aside>
 </main>
+
+<section class="skymap" id="skymap" hidden aria-label="Sky map">
+  <div class="sky-stage" id="skyStage">
+    <canvas id="skyCanvas" aria-label="Interactive map of the sky. Drag to move, scroll or pinch to zoom, click to pick a spot."></canvas>
+    <form class="sky-search" id="skySearch" autocomplete="off">
+      <input id="skyQ" type="text" placeholder="Vega, M31, Barnard's Star or 269.45 +4.69" spellcheck="false" aria-label="Find an object or position">
+      <button type="submit" data-i18n="skyFind">Find</button>
+      <span id="skySearchStatus" class="sky-status"></span>
+    </form>
+    <div class="sky-tools">
+      <button type="button" id="skyZoomIn" aria-label="Zoom in">+</button>
+      <button type="button" id="skyZoomOut" aria-label="Zoom out">−</button>
+      <button type="button" id="skyReset" data-i18n="skyReset">Whole sky</button>
+      <button type="button" id="skySave" data-i18n="skySave">Save PNG</button>
+    </div>
+    <div class="sky-tip" id="skyTip" hidden></div>
+    <p class="sky-loading" id="skyLoading" hidden data-i18n="skyLoadingData">Loading the star map…</p>
+    <div class="sky-readout">
+      <span id="skyCursor">—</span>
+      <span id="skyCursorGal"></span>
+      <span id="skyCursorCon"></span>
+      <span><span data-i18n="skyField">Field</span> <b id="skyFov">—</b></span>
+    </div>
+  </div>
+
+  <aside class="panel sky-panel" aria-label="Sky map controls">
+    <section class="card">
+      <h2 data-i18n="skyPickTitle">Selected spot</h2>
+      <div id="skyPick"></div>
+      <div class="sky-actions">
+        <button type="button" class="go" id="skyLoadFp" disabled data-i18n="skyLoadFp">Show SPHEREx exposures here</button>
+        <button type="button" class="ghost" id="skyBlink" disabled data-i18n="skyBlink">Blink this spot</button>
+      </div>
+      <p id="skyFpStatus" class="sky-status"></p>
+    </section>
+    <section class="card">
+      <h2 data-i18n="skyCoverage">SPHEREx coverage</h2>
+      <div id="skyStats"></div>
+      <div id="skyBandsBox" hidden>
+        <h3 data-i18n="skyBandsTitle">Detector bands</h3>
+        <div id="skyBandChips" class="chips"></div>
+      </div>
+      <div id="skyTime" hidden>
+        <div class="sky-timehead">
+          <h3 data-i18n="skyTimeTitle">Time</h3>
+          <button type="button" class="ghost small" id="skyPlay" data-i18n="skyPlay">Play the survey</button>
+        </div>
+        <canvas id="skyHist" height="70" aria-label="Exposures per week. Drag to choose a date range, click to clear."></canvas>
+        <p class="muted small"><span id="skyRange"></span> · <span data-i18n="skyBrushHint">drag on the bars to pick dates</span></p>
+      </div>
+      <div id="skySel" class="sky-sel" hidden></div>
+    </section>
+    <section class="card">
+      <h2 data-i18n="skyGoTo">Challenge targets</h2>
+      <div id="skyTargets" class="chips"></div>
+    </section>
+    <section class="card">
+      <h2 data-i18n="skyLayersTitle">Layers</h2>
+      <div id="skyLayers" class="sky-layers"></div>
+    </section>
+    <p class="muted small" data-i18n-html="skyCredit">Stars: Hipparcos, via <a href="https://github.com/ofrohn/d3-celestial" target="_blank" rel="noopener">d3-celestial</a> (Olaf Frohn, BSD licence), with its Milky Way outline and constellation lines. Footprints: SPHEREx, NASA/JPL-Caltech/IPAC, from IRSA.</p>
+  </aside>
+</section>
 
 <section class="notes">
   <article>

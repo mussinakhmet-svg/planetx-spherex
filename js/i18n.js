@@ -49,6 +49,24 @@ const EN = {
   predictedHere: 'catalogue',
   gaiaFailed: 'Gaia stars could not be loaded.',
   hoverVal: '{v} MJy/sr above sky',
+
+  // sky map
+  tabViewer: 'Blink viewer', tabSky: 'Sky map',
+  skyEcliptic: 'Ecliptic', skyGalCentre: 'Galactic centre',
+  skyFpLoading: 'Asking IRSA for every SPHEREx exposure within 0.5° of this spot…',
+  skyFpLoaded: '{n} SPHEREx exposures cover this spot (found in {s} s).',
+  skyFpNone: 'No public SPHEREx exposures cover this spot yet. New data arrive every week.',
+  skyFpHint: 'Pick a spot on the map and press “Show SPHEREx exposures here”. Each exposure is drawn as its real footprint on the sky, coloured by date.',
+  skyShown: 'shown', skyTotal: 'exposures', skyPasses: 'survey passes', skyAllTime: 'All dates',
+  skyPlay: 'Play the survey', skyPause: 'Pause',
+  skyExposure: 'Selected exposure', skyDate: 'Date', skyBand: 'Band', skyPass: 'Pass', skyRelease: 'Release',
+  skyPickHint: 'Click anywhere on the sky, search for an object, or pick a challenge target.',
+  skyDegrees: 'Degrees', skyGalactic: 'Galactic', skyConstellation: 'Constellation',
+  skyResolving: 'Looking up the name…', skyNotFound: 'Could not find “{q}”. Try another name or coordinates.',
+  skyDataFailed: 'The star map could not load. Check your connection and reload the page.',
+  skyLMw: 'Milky Way', skyLLines: 'Constellations', skyLNames: 'Constellation names', skyLBounds: 'Boundaries',
+  skyLGrid: 'RA/Dec grid', skyLEcl: 'Ecliptic', skyLGal: 'Galactic plane', skyLStars: 'Star names',
+  skyLMessier: 'Messier objects', skyLTargets: 'Challenge targets', skyLFp: 'SPHEREx footprints',
 };
 
 const RU = {
@@ -118,6 +136,28 @@ const RU = {
   predictedHere: 'каталог',
   gaiaFailed: 'Не удалось загрузить звёзды Gaia.',
   hoverVal: '{v} МЯн/ср над фоном',
+
+  tabViewer: 'Сравнение снимков', tabSky: 'Карта неба',
+  skyEcliptic: 'Эклиптика', skyGalCentre: 'Центр Галактики',
+  skyFpLoading: 'Запрашиваем в IRSA все снимки SPHEREx в радиусе 0,5° от этой точки…',
+  skyFpLoaded: 'Эту точку покрывают {n} снимков SPHEREx (найдено за {s} с).',
+  skyFpNone: 'Публичных снимков SPHEREx этой точки пока нет. Новые данные выходят каждую неделю.',
+  skyFpHint: 'Выберите точку на карте и нажмите «Показать снимки SPHEREx здесь». Каждый снимок рисуется своим настоящим контуром на небе, цвет — дата.',
+  skyShown: 'показано', skyTotal: 'снимков', skyPasses: 'проходов обзора', skyAllTime: 'Все даты',
+  skyPlay: 'Проиграть обзор', skyPause: 'Пауза',
+  skyExposure: 'Выбранный снимок', skyDate: 'Дата', skyBand: 'Диапазон', skyPass: 'Проход', skyRelease: 'Релиз',
+  skyPickHint: 'Кликните в любое место неба, найдите объект или выберите цель челленджа.',
+  skyDegrees: 'Градусы', skyGalactic: 'Галактические', skyConstellation: 'Созвездие',
+  skyResolving: 'Ищем по имени…', skyNotFound: 'Не нашли «{q}». Попробуйте другое имя или координаты.',
+  skyDataFailed: 'Карта звёзд не загрузилась. Проверьте соединение и обновите страницу.',
+  skyLMw: 'Млечный Путь', skyLLines: 'Созвездия', skyLNames: 'Названия созвездий', skyLBounds: 'Границы',
+  skyLGrid: 'Сетка RA/Dec', skyLEcl: 'Эклиптика', skyLGal: 'Плоскость Галактики', skyLStars: 'Имена звёзд',
+  skyLMessier: 'Объекты Мессье', skyLTargets: 'Цели челленджа', skyLFp: 'Контуры SPHEREx',
+  skyFind: 'Найти', skyReset: 'Всё небо', skySave: 'Сохранить PNG', skyLoadingData: 'Загружаем карту звёзд…', skyField: 'Поле',
+  skyPickTitle: 'Выбранная точка', skyLoadFp: 'Показать снимки SPHEREx здесь', skyBlink: 'Мигнуть эту точку',
+  skyCoverage: 'Покрытие SPHEREx', skyBandsTitle: 'Диапазоны детекторов', skyTimeTitle: 'Время',
+  skyBrushHint: 'проведите по столбикам, чтобы выбрать даты', skyGoTo: 'Цели челленджа', skyLayersTitle: 'Слои',
+  skyCredit: 'Звёзды: Hipparcos, через <a href="https://github.com/ofrohn/d3-celestial" target="_blank" rel="noopener">d3-celestial</a> (Olaf Frohn, лицензия BSD), оттуда же контур Млечного Пути и линии созвездий. Контуры снимков: SPHEREx, NASA/JPL-Caltech/IPAC, из IRSA.',
 };
 
 const KK = {
@@ -187,6 +227,28 @@ const KK = {
   predictedHere: 'каталог',
   gaiaFailed: 'Gaia жұлдыздарын жүктеу мүмкін болмады.',
   hoverVal: 'фоннан {v} МЯн/ср жоғары',
+
+  tabViewer: 'Суреттерді салыстыру', tabSky: 'Аспан картасы',
+  skyEcliptic: 'Эклиптика', skyGalCentre: 'Галактика орталығы',
+  skyFpLoading: 'IRSA-дан осы нүктеден 0,5° радиустағы барлық SPHEREx түсірілімдерін сұраймыз…',
+  skyFpLoaded: 'Бұл нүктені {n} SPHEREx түсірілімі қамтиды ({s} с ішінде табылды).',
+  skyFpNone: 'Бұл нүктенің ашық SPHEREx түсірілімдері әзірге жоқ. Жаңа деректер апта сайын шығады.',
+  skyFpHint: 'Картадан нүкте таңдап, «Осы жердегі SPHEREx түсірілімдері» батырмасын басыңыз. Әр түсірілім аспандағы нақты контурымен салынады, түсі — күні.',
+  skyShown: 'көрсетілді', skyTotal: 'түсірілім', skyPasses: 'шолу өтуі', skyAllTime: 'Барлық күндер',
+  skyPlay: 'Шолуды ойнату', skyPause: 'Кідірту',
+  skyExposure: 'Таңдалған түсірілім', skyDate: 'Күні', skyBand: 'Диапазон', skyPass: 'Өту', skyRelease: 'Релиз',
+  skyPickHint: 'Аспанның кез келген жерін басыңыз, нысанды іздеңіз немесе челлендж нысанасын таңдаңыз.',
+  skyDegrees: 'Градус', skyGalactic: 'Галактикалық', skyConstellation: 'Шоқжұлдыз',
+  skyResolving: 'Атау бойынша іздеп жатырмыз…', skyNotFound: '«{q}» табылмады. Басқа атау не координат жазып көріңіз.',
+  skyDataFailed: 'Жұлдыз картасы жүктелмеді. Байланысты тексеріп, бетті жаңартыңыз.',
+  skyLMw: 'Құс жолы', skyLLines: 'Шоқжұлдыздар', skyLNames: 'Шоқжұлдыз атаулары', skyLBounds: 'Шекаралар',
+  skyLGrid: 'RA/Dec торы', skyLEcl: 'Эклиптика', skyLGal: 'Галактика жазықтығы', skyLStars: 'Жұлдыз атаулары',
+  skyLMessier: 'Мессье нысандары', skyLTargets: 'Челлендж нысаналары', skyLFp: 'SPHEREx контурлары',
+  skyFind: 'Табу', skyReset: 'Бүкіл аспан', skySave: 'PNG сақтау', skyLoadingData: 'Жұлдыз картасы жүктелуде…', skyField: 'Өріс',
+  skyPickTitle: 'Таңдалған нүкте', skyLoadFp: 'Осы жердегі SPHEREx түсірілімдері', skyBlink: 'Осы нүктені жыпылықтату',
+  skyCoverage: 'SPHEREx қамтуы', skyBandsTitle: 'Детектор диапазондары', skyTimeTitle: 'Уақыт',
+  skyBrushHint: 'күндерді таңдау үшін бағандарды бойлай сүйреңіз', skyGoTo: 'Челлендж нысаналары', skyLayersTitle: 'Қабаттар',
+  skyCredit: 'Жұлдыздар: Hipparcos, <a href="https://github.com/ofrohn/d3-celestial" target="_blank" rel="noopener">d3-celestial</a> арқылы (Olaf Frohn, BSD лицензиясы), Құс жолы контуры мен шоқжұлдыз сызықтары да сол жерден. Түсірілім контурлары: SPHEREx, NASA/JPL-Caltech/IPAC, IRSA-дан.',
 };
 
 const DICT = { en: EN, ru: RU, kk: KK };
@@ -211,6 +273,7 @@ export function setLang(l) {
     if (html) el.innerHTML = tr ?? originals.get(el); else el.textContent = tr ?? originals.get(el);
   }
   for (const b of document.querySelectorAll('.lang button')) b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+  window.dispatchEvent(new CustomEvent('langchange', { detail: lang }));
 }
 
 export function initialLang() {

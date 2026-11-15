@@ -3,7 +3,7 @@
 **NASA Space Apps Challenge 2026 · Challenge: _Planet X and SPHEREx_ · Team Sigma Boys (Almaty, Kazakhstan)**
 Akhmet, Ali, Sergazy, Dimash
 
-> **Live site:** https://planetx-spherex.vercel.app · **Video lessons:** https://www.youtube.com/@InfraBlink · **Code:** this repository (MIT)
+> **Live site:** https://planetx-spherex.vercel.app · **30-second demo:** https://www.youtube.com/watch?v=YeFGuYpoC5U · **Video lessons:** https://www.youtube.com/@InfraBlink · **Code:** this repository (MIT)
 
 Pluto was found in 1930 by blinking two photographs of the same sky and noticing one dot that moved.
 SPHEREx now photographs the whole sky in 102 infrared colours every six months — more than a billion
@@ -85,6 +85,7 @@ See **[docs/VALIDATION.md](docs/VALIDATION.md)** for numbers, method and limits.
 
 * One SPHEREx pixel is 6.15″. Shifts under ~⅓ pixel are measured, not seen by eye.
 * Each exposure sees a spot at a single wavelength; brightness differences between single frames are partly colour. Compare stacked passes.
+* The spectral fingerprint uses six schematic templates. For very faint sources it can confuse a cold brown dwarf with a warm asteroid (for WISE 0855 it prefers the asteroid shape); the site says so and points to the motion, which settles it.
 * A Planet-Nine-like body is several magnitudes fainter than a single exposure can detect. The tool demonstrates the method on known movers; it does not claim a discovery.
 
 ## Run it locally

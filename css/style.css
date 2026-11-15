@@ -381,3 +381,9 @@ body.view-page #planet { opacity: 0.35; transition: opacity .4s; }
 .examples-title { margin: 18px 0 8px; font: 600 13px/1.2 var(--text); color: var(--muted); }
 body.in-mission .examples-title { display: none; }
 body.view-page .mission, body.view-sky .mission { display: none; }
+
+.demo-link { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; position: relative; z-index: 1; }
+.demo-link a { font-size: 15px; font-weight: 600; color: var(--ink, #e8ecf4); text-decoration: none; padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(255,138,76,.55); background: rgba(255,138,76,.10); }
+.demo-link a:first-child { background: #ff8a4c; color: #14100e; border-color: #ff8a4c; }
+.demo-link a:hover, .demo-link a:focus-visible { filter: brightness(1.1); outline: none; }
+body.view-page .demo-link, body.view-sky .demo-link { display: none; }

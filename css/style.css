@@ -380,3 +380,4 @@ body.view-page #planet { opacity: 0.35; transition: opacity .4s; }
 .search #q { padding: 13px 14px; font-size: 16px; border-color: #3d4d75; }
 .examples-title { margin: 18px 0 8px; font: 600 13px/1.2 var(--text); color: var(--muted); }
 body.in-mission .examples-title { display: none; }
+body.view-page .mission, body.view-sky .mission { display: none; }

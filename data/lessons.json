@@ -1,14 +1,14 @@
 {
   "_howto": "To publish a video: upload it to the team YouTube channel, then paste the video ID (the part after watch?v=) into \"youtube\". Leave it empty to show 'Coming soon'. Set channel.url to the channel link.",
-  "channel": { "name": "InfraBlink on YouTube", "url": "" },
+  "channel": { "name": "InfraBlink on YouTube", "url": "https://www.youtube.com/@InfraBlink" },
   "student": [
     { "id": "s1", "title": "What is SPHEREx?", "minutes": 3, "youtube": "", "level": "Start here",
       "summary": "A telescope that photographs the whole sky in 102 infrared colours, every six months.",
       "try": { "label": "Open the sky map", "href": "#sky" } },
-    { "id": "s2", "title": "Blinking: how Pluto was found", "minutes": 4, "youtube": "", "level": "Start here",
+    { "id": "s2", "title": "Blinking: how Pluto was found", "minutes": 2, "youtube": "hyT54WRUVYU", "level": "Start here",
       "summary": "Two photographs, one dot that moved. The idea behind the whole site.",
       "try": { "label": "Track Pluto in SPHEREx", "href": "#track" } },
-    { "id": "s3", "title": "Your first blink: Barnard's Star", "minutes": 5, "youtube": "", "level": "Basics",
+    { "id": "s3", "title": "Your first blink: Barnard's Star", "minutes": 2, "youtube": "OKxJjoD-B_A", "level": "Basics",
       "summary": "Load a field, play the survey passes, click the star that moves and read off how far it went.",
       "try": { "label": "Try it", "href": "./?t=barnard" } },
     { "id": "s4", "title": "Hidden in the noise: stacking", "minutes": 5, "youtube": "", "level": "Basics",

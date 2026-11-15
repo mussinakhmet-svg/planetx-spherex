@@ -1,0 +1,113 @@
+WEBVTT
+
+1
+00:00:00.800 --> 00:00:04.269
+Some objects are too faint to see in a single picture.
+
+2
+00:00:04.319 --> 00:00:06.875
+Today we make one appear out of nothing.
+
+3
+00:00:07.533 --> 00:00:12.126
+This field holds WISE 0855, the coldest brown dwarf we know.
+
+4
+00:00:12.176 --> 00:00:18.858
+It is colder than ice, about minus 20 degrees Celsius, and only seven light-years away.
+
+5
+00:00:19.500 --> 00:00:24.010
+Look at the centre of any single picture. Nothing. Just grainy noise.
+
+6
+00:00:24.060 --> 00:00:27.975
+The object is there, but its light is weaker than the noise.
+
+7
+00:00:28.633 --> 00:00:31.025
+Here is the trick. Noise is random:
+
+8
+00:00:31.075 --> 00:00:35.979
+in one picture a pixel is a bit too bright, in the next a bit too dark.
+
+9
+00:00:36.029 --> 00:00:38.700
+The object is always in the same place.
+
+10
+00:00:38.750 --> 00:00:43.933
+If we average many pictures, the noise cancels out, but the object adds up.
+
+11
+00:00:44.567 --> 00:00:50.771
+Average 16 pictures, and the noise drops four times, because of the square root of 16.
+
+12
+00:00:50.821 --> 00:00:52.517
+This is called stacking.
+
+13
+00:00:53.167 --> 00:00:56.612
+Now switch to the stacked passes. And there it is:
+
+14
+00:00:56.662 --> 00:01:00.667
+a faint dot in the centre. It was hiding in every picture.
+
+15
+00:01:01.300 --> 00:01:04.470
+Now watch the dot from pass to pass. It moves:
+
+16
+00:01:04.520 --> 00:01:07.830
+about four and a half arcseconds in half a year.
+
+17
+00:01:07.880 --> 00:01:11.050
+A nearby object, moving against the far stars.
+
+18
+00:01:11.700 --> 00:01:15.733
+Why did we choose this colour band, 4.4 to 5 micrometres?
+
+19
+00:01:15.783 --> 00:01:20.317
+Because a cold brown dwarf gives off almost all its light there.
+
+20
+00:01:20.367 --> 00:01:23.325
+In the shorter colours it is nearly black.
+
+21
+00:01:23.967 --> 00:01:24.676
+Click on it:
+
+22
+00:01:24.726 --> 00:01:28.724
+the site measures the motion and compares it with the catalogue.
+
+23
+00:01:28.774 --> 00:01:31.317
+They agree to a fraction of an arcsecond.
+
+24
+00:01:31.967 --> 00:01:36.292
+Your turn: the mission, The invisible neighbour, hides the name.
+
+25
+00:01:36.342 --> 00:01:38.617
+Use the stacked passes to find it.
+
+26
+00:01:39.267 --> 00:01:39.833
+Remember:
+
+27
+00:01:39.883 --> 00:01:44.213
+when something is too faint, take more pictures and add them up.
+
+28
+00:01:44.263 --> 00:01:46.267
+Astronomers do this every day.

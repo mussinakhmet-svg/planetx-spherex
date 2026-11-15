@@ -11,7 +11,7 @@
     { "id": "s3", "title": "Your first blink: Barnard's Star", "minutes": 2, "youtube": "OKxJjoD-B_A", "level": "Basics",
       "summary": "Load a field, play the survey passes, click the star that moves and read off how far it went.",
       "try": { "label": "Try it", "href": "./?t=barnard" } },
-    { "id": "s4", "title": "Hidden in the noise: stacking", "minutes": 2, "youtube": "", "level": "Basics",
+    { "id": "s4", "title": "Hidden in the noise: stacking", "minutes": 2, "youtube": "", "video": "videos/lesson4-hidden-in-the-noise.mp4", "poster": "videos/lesson4-hidden-in-the-noise.jpg", "subtitles": "videos/lesson4-hidden-in-the-noise.en.vtt", "level": "Basics",
       "summary": "WISE 0855 is invisible in one exposure. Average a whole pass and it appears.",
       "try": { "label": "Try it", "href": "./?t=w0855" } },
     { "id": "s5", "title": "Reading a spectrum", "minutes": 2, "youtube": "zYPAAXZ94MM", "level": "Going further",

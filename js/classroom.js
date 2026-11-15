@@ -12,9 +12,12 @@ const ytId = v => { v = String(v || '').trim(); if (/^[\w-]{11}$/.test(v)) retur
 let L = null, role = 'student';
 
 function card(x) {
-  const id = ytId(x.youtube);
-  const thumb = id ? `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy">` : `<div class="v-soon"><span>Video coming soon</span></div>`;
-  return `<article class="v-card${id ? '' : ' soon'}" ${id ? `data-yt="${id}" tabindex="0" role="button" aria-label="Play ${esc(x.title)}"` : ''}>
+  const yt = ytId(x.youtube);
+  // A lesson can also be a video file served by the site itself ("video": "videos/x.mp4", "poster": "videos/x.jpg").
+  const id = yt || (x.video ? 'file:' + x.video : '');
+  const thumb = yt ? `<img src="https://i.ytimg.com/vi/${yt}/hqdefault.jpg" alt="" loading="lazy">`
+    : x.video ? `<img src="${esc(x.poster || '')}" alt="" loading="lazy">` : `<div class="v-soon"><span>Video coming soon</span></div>`;
+  return `<article class="v-card${id ? '' : ' soon'}" ${id ? `data-yt="${esc(id)}" data-sub="${esc(x.subtitles || '')}" tabindex="0" role="button" aria-label="Play ${esc(x.title)}"` : ''}>
     <div class="v-thumb">${thumb}<span class="v-time">${x.minutes} min</span>${id ? '<span class="v-play" aria-hidden="true"></span>' : ''}</div>
     <div class="v-body">
       <span class="mission-tag">${esc(x.level || '')}</span>
@@ -22,7 +25,7 @@ function card(x) {
       <p>${esc(x.summary)}</p>
       <div class="v-links">
         ${x.try ? `<a class="ghost small" href="${esc(x.try.href)}">${esc(x.try.label)}</a>` : ''}
-        ${id ? `<a class="ghost small" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">Watch on YouTube</a>` : ''}
+        ${yt ? `<a class="ghost small" href="https://www.youtube.com/watch?v=${yt}" target="_blank" rel="noopener">Watch on YouTube</a>` : ''}
       </div>
       ${x.plan ? plan(x.plan) : ''}
     </div>
@@ -43,7 +46,7 @@ function render() {
   const ch = L.channel && L.channel.url;
   $('cChannel').innerHTML = ch ? `<a class="go" href="${esc(ch)}" target="_blank" rel="noopener">Our YouTube channel</a>` : `<span class="muted small">Our YouTube channel link will appear here.</span>`;
   for (const el of $('cGrid').querySelectorAll('[data-yt]')) {
-    const open = e => { if (e.target.closest('a, button, details')) return; player(el.dataset.yt, el.querySelector('h3').textContent); };
+    const open = e => { if (e.target.closest('a, button, details')) return; player(el.dataset.yt, el.querySelector('h3').textContent, el.dataset.sub); };
     el.addEventListener('click', open); el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(e); } });
   }
   for (const b of $('cGrid').querySelectorAll('[data-copy]')) b.addEventListener('click', async () => {
@@ -52,11 +55,15 @@ function render() {
   });
 }
 
-function player(id, title) {
+function player(id, title, sub) {
   const d = $('cPlayer');
-  d.querySelector('.v-frame').innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  const file = id.startsWith('file:') ? id.slice(5) : '';
+  d.querySelector('.v-frame').innerHTML = file
+    ? `<video src="${esc(file)}" controls autoplay playsinline style="width:100%;height:100%;background:#000">${sub ? `<track kind="subtitles" srclang="en" label="English" src="${esc(sub)}">` : ''}</video>`
+    : `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
   d.querySelector('h3').textContent = title;
-  d.querySelector('.v-yt').href = `https://www.youtube.com/watch?v=${id}`;
+  const yl = d.querySelector('.v-yt');
+  if (file) { yl.href = file; yl.textContent = 'Download video'; } else { yl.href = `https://www.youtube.com/watch?v=${id}`; yl.textContent = 'Watch on YouTube'; }
   d.showModal();
 }
 

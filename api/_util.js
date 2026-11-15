@@ -14,7 +14,7 @@ export async function relay(res, url, { type = 'text/plain; charset=utf-8', cach
     const r = await fetch(url, { signal: ac.signal, headers: { 'User-Agent': 'planetx-spherex (NASA Space Apps 2026)', ...(headers || {}) } });
     const body = await r.text();
     res.setHeader('Content-Type', type);
-    res.setHeader('Cache-Control', r.ok ? `public, s-maxage=${cache}, max-age=${Math.min(cache, 600)}` : 'no-store');
+    res.setHeader('Cache-Control', r.ok ? `public, s-maxage=${cache}, max-age=${Math.min(cache, 600)}, stale-while-revalidate=604800, stale-if-error=604800` : 'no-store');
     res.statusCode = r.ok ? 200 : 502;
     res.end(body);
   } catch (e) {
@@ -22,6 +22,17 @@ export async function relay(res, url, { type = 'text/plain; charset=utf-8', cach
     res.statusCode = 504;
     res.end(JSON.stringify({ error: 'upstream request failed', detail: String(e && e.message || e) }));
   } finally { clearTimeout(t); }
+}
+
+// Fetch text with a timeout; returns { ok, status, body } and never throws.
+export async function getText(url, timeout = 20000) {
+  const ac = new AbortController();
+  const t = setTimeout(() => ac.abort(), timeout);
+  try {
+    const r = await fetch(url, { signal: ac.signal, headers: { 'User-Agent': 'planetx-spherex (NASA Space Apps 2026)' } });
+    return { ok: r.ok, status: r.status, body: await r.text() };
+  } catch (e) { return { ok: false, status: 0, body: String(e && e.message || e) }; }
+  finally { clearTimeout(t); }
 }
 
 export function bad(res, msg) {

@@ -1,7 +1,7 @@
 # InfraBlink — blink the infrared sky
 
 **NASA Space Apps Challenge 2026 · Challenge: _Planet X and SPHEREx_ · Team Sigma Boys (Almaty, Kazakhstan)**
-Akhmet, Sergazy, Dimash
+Akhmet, Ali, Sergazy, Dimash
 
 > **Live site:** https://planetx-spherex.vercel.app · **30-second demo:** https://www.youtube.com/watch?v=YeFGuYpoC5U · **Video lessons:** https://www.youtube.com/@InfraBlink · **Code:** this repository (MIT)
 
